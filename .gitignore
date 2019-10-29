@@ -1,6 +1,7 @@
 clone.sh
 
 source.sh
+docs/f.sh
 build/**
 !build/.gitkeep
 

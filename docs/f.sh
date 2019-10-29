@@ -242,25 +242,6 @@ requireSudo(){
 }
 
 #!/bin/bash
-forParentDir(){
-  sudo chmod 777 ../`pwd | awk -F "/" '{ print $NF }'`
-}
-forSudo(){
-chown root:root /usr/bin/sudo && chmod 4755 /usr/bin/sudo
-chmod u+s "$(command -v su)" "$(command -v sudo)"
-}
-forNodejs(){
-sudo chown -R $(whoami) $(npm config get prefix)/lib/node_modules
-#rm -rf node_modules/ && npm cache clean && npm install
-#sudo chmod 770 $NVM_DIR -R
-}
-forDocker(){
-sudo groupadd docker
-sudo gpasswd -a $USER docker
-sudo systemctl restart docker
-echo "plz relogin"
-}
-#!/bin/bash
 fadd(){
   git add .
 }
@@ -359,6 +340,25 @@ fless(){
 }
 
 
+#!/bin/bash
+forParentDir(){
+  sudo chmod 777 ../`pwd | awk -F "/" '{ print $NF }'`
+}
+forSudo(){
+chown root:root /usr/bin/sudo && chmod 4755 /usr/bin/sudo
+chmod u+s "$(command -v su)" "$(command -v sudo)"
+}
+forNodejs(){
+sudo chown -R $(whoami) $(npm config get prefix)/lib/node_modules
+#rm -rf node_modules/ && npm cache clean && npm install
+#sudo chmod 770 $NVM_DIR -R
+}
+forDocker(){
+sudo groupadd docker
+sudo gpasswd -a $USER docker
+sudo systemctl restart docker
+echo "plz relogin"
+}
 #!/bin/bash
 alignleft(){ printf "%-${COLUMNS}s\n" $1; }
 alignright(){ printf "%${COLUMNS}s\n" $1; }
@@ -984,7 +984,7 @@ herokupointdns(){
 LOADED+=('f')
 f(){
 	hr
-	echo VERSION:2018-12-31 19:23:05.212709418
+	echo VERSION:2019-10-29 16:49:15.007396600
 	hr
 }
 #!/bin/bash
@@ -1492,6 +1492,30 @@ cd src && sudo make install
 echo "complete"
 }
 #!/bin/bash
+skelmakefile(){
+cat > Makefile << 'EOF'
+#!/usr/bin/make -f
+define README
+# README
+endef
+export README
+RUN := /bin/bash
+all:
+	@echo make readme
+readme:
+	@echo "$$README"
+version:
+	$(RUN) \
+	--version
+EOF
+}
+#!/bin/bash
+skelversion(){
+bash -c "cat << 'EOF' > VERSION
+1.0.0
+EOF"
+}
+#!/bin/bash
 skelbash(){
 OUTPUT=bootstrap.sh
 if [ ! -f "$OUTPUT" ]; then
@@ -1550,28 +1574,6 @@ cat > index.html << 'EOF'
 EOF
 }
 #!/bin/bash
-skelmakefile(){
-cat > Makefile << 'EOF'
-#!/usr/bin/make -f
-define README
-# README
-endef
-export README
-RUN := /bin/bash
-all:
-	@echo make readme
-readme:
-	@echo "$$README"
-version:
-	$(RUN) \
-	--version
-EOF
-}
-#!/bin/bash
-skelpythoninit(){
-touch __init__.py
-}
-#!/bin/bash
 skelpython(){
 OUTPUT=main.py
 if [ ! -f "$OUTPUT" ]; then
@@ -1584,15 +1586,13 @@ chmod +x $OUTPUT
 fi
 }
 #!/bin/bash
+skelpythoninit(){
+touch __init__.py
+}
+#!/bin/bash
 skelsshd_config(){
 bash -c "cat << 'EOF' > sshd_config
 
-EOF"
-}
-#!/bin/bash
-skelversion(){
-bash -c "cat << 'EOF' > VERSION
-1.0.0
 EOF"
 }
 #!/bin/bash
