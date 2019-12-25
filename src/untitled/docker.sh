@@ -18,3 +18,7 @@ sudo cgroupfs-mount
 #restart terminal for admin privilege
 sudo service docker start
 }
+dockerphp72apache80www(){
+  mkdir -p www
+  docker run -d -p 80:80 -v "$PWD/www":/var/www/html php:7.2-apache
+}
