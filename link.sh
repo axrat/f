@@ -4,7 +4,7 @@ unlink(){
   sudo rm -f /f
 }
 link(){
-  sudo ln -s $PWD/source.sh /f.sh
+  sudo ln -s $PWD/docs/f.sh /f.sh
   sudo ln -s $PWD /f
 }
 unlink
