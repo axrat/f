@@ -1,14 +1,7 @@
 #!/bin/bash
-unlink(){
-  sudo rm -f /f.sh
-  sudo rm -f /f
-}
-link(){
-  sudo ln -s $PWD/docs/f.sh /f.sh
-  sudo ln -s $PWD /f
-}
-unlink
-link
+
+sudo ln -s $PWD/docs/f.sh /f.sh
+sudo ln -s $PWD /f
 
 FILE="$HOME/.bashrc"
 LINE="[ -e /f.sh ] && source /f.sh"

@@ -984,7 +984,7 @@ herokupointdns(){
 LOADED+=('f')
 f(){
 	hr
-	echo VERSION:2019-12-25 03:49:07.442572555
+	echo VERSION:2019-12-26 17:22:47.648318000
 	hr
 }
 #!/bin/bash
