@@ -984,7 +984,7 @@ herokupointdns(){
 LOADED+=('f')
 f(){
 	hr
-	echo VERSION:2020-05-10 09:31:35.763879200
+	echo VERSION:2020-05-10 10:49:26.280673200
 	hr
 }
 #!/bin/bash
@@ -1520,24 +1520,10 @@ skelbash(){
 OUTPUT=bootstrap.sh
 if [ ! -f "$OUTPUT" ]; then
 cat << 'EOF' > $OUTPUT
-#!/usr/bin/env bash
-
-if [[ "$(id -u)" != "0" ]]; then
-    PASS=$(zenity --entry --text="input:")
-    CMD=$0
-    expect -c "
-      set timeout -1
-      spawn sudo $CMD
-      expect \"assword\" {
-        send \"$PASS\n\"
-      }
-      interact
-    "
-    exit
-fi
-sudo bash -c "cat << 'EOF' > ok
-$(date +%Y%m%d%H%M%S)
-EOF"
+#!/bin/bash
+#sudo bash -c "cat << 'EOF' > ok
+#$(date +%Y%m%d%H%M%S)
+#EOF"
 echo "complete"
 EOF
 chmod +x $OUTPUT
@@ -1579,16 +1565,24 @@ OUTPUT=skel.json
 if [ ! -f "$OUTPUT" ]; then
 cat << 'EOF' > $OUTPUT
 {
-  "root": {
-    "name":"value",
+  "root":{
+    "id":"1",
     "list":["a","b","c"],
-    "object":{
-      "key": "val"
-    }
+    "object":{"key":"val"},
+    "array":[
+      {"name":"name1"},
+      {"name":"name2"}
+    ]
   }
 }
 EOF
 fi
+}
+#!/bin/bash
+skelphp(){
+cat > info.php << 'EOF'
+<?php phpinfo();
+EOF
 }
 #!/bin/bash
 skelpython(){
@@ -1601,16 +1595,6 @@ bash -c "cat << 'EOF' > $OUTPUT
 EOF"
 chmod +x $OUTPUT
 fi
-}
-#!/bin/bash
-skelpythoninit(){
-touch __init__.py
-}
-#!/bin/bash
-skelsshd_config(){
-bash -c "cat << 'EOF' > sshd_config
-
-EOF"
 }
 #!/bin/bash
 ubuntuinstallntp(){
