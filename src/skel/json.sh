@@ -13,6 +13,5 @@ cat << 'EOF' > $OUTPUT
   }
 }
 EOF
-chmod +x $OUTPUT
 fi
 }

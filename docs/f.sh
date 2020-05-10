@@ -984,7 +984,7 @@ herokupointdns(){
 LOADED+=('f')
 f(){
 	hr
-	echo VERSION:2020-05-10 09:29:39.609883200
+	echo VERSION:2020-05-10 09:31:35.763879200
 	hr
 }
 #!/bin/bash
@@ -1588,7 +1588,6 @@ cat << 'EOF' > $OUTPUT
   }
 }
 EOF
-chmod +x $OUTPUT
 fi
 }
 #!/bin/bash
