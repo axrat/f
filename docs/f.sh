@@ -984,7 +984,7 @@ herokupointdns(){
 LOADED+=('f')
 f(){
 	hr
-	echo VERSION:2020-01-07 16:58:51.287980500
+	echo VERSION:2020-05-10 09:29:39.609883200
 	hr
 }
 #!/bin/bash
@@ -1572,6 +1572,24 @@ cat > index.html << 'EOF'
 </body>
 </html>
 EOF
+}
+#!/bin/bash
+skeljson(){
+OUTPUT=skel.json
+if [ ! -f "$OUTPUT" ]; then
+cat << 'EOF' > $OUTPUT
+{
+  "root": {
+    "name":"value",
+    "list":["a","b","c"],
+    "object":{
+      "key": "val"
+    }
+  }
+}
+EOF
+chmod +x $OUTPUT
+fi
 }
 #!/bin/bash
 skelpython(){
