@@ -1,6 +1,6 @@
 #!/bin/bash
 skelbash(){
-OUTPUT=bootstrap.sh
+OUTPUT=skel.sh
 if [ ! -f "$OUTPUT" ]; then
 cat << 'EOF' > $OUTPUT
 #!/bin/bash

@@ -984,7 +984,7 @@ herokupointdns(){
 LOADED+=('f')
 f(){
 	hr
-	echo VERSION:2020-05-10 10:49:26.280673200
+	echo VERSION:2020-05-11 19:00:28.119840800
 	hr
 }
 #!/bin/bash
@@ -1517,7 +1517,7 @@ EOF"
 }
 #!/bin/bash
 skelbash(){
-OUTPUT=bootstrap.sh
+OUTPUT=skel.sh
 if [ ! -f "$OUTPUT" ]; then
 cat << 'EOF' > $OUTPUT
 #!/bin/bash
