@@ -984,7 +984,7 @@ herokupointdns(){
 LOADED+=('f')
 f(){
 	hr
-	echo VERSION:2020-05-14 11:04:27.245974300
+	echo VERSION:2020-05-26 14:54:22.243082900
 	hr
 }
 #!/bin/bash
@@ -1697,5 +1697,5 @@ sudo service docker start
 }
 dockerphp72apache80www(){
   mkdir -p www
-  docker run -d -p 80:80 -v "$PWD/www":/var/www php:7.2-apache
+  sudo docker run -d -p 80:80 -v "$PWD/www":/var/www php:7.2-apache
 }

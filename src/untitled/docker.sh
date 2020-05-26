@@ -20,5 +20,5 @@ sudo service docker start
 }
 dockerphp72apache80www(){
   mkdir -p www
-  docker run -d -p 80:80 -v "$PWD/www":/var/www php:7.2-apache
+  sudo docker run -d -p 80:80 -v "$PWD/www":/var/www php:7.2-apache
 }
