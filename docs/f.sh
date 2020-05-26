@@ -51,13 +51,9 @@ wgetgithub(){
   fi
 }
 #!/bin/bash
-alias ls='ls --color=auto'
 alias ll='ls -alFh'
 alias la='ls -A'
 alias l='ls -cf'
-alias grep='grep --color=auto'
-alias fgrep='fgrep --color=auto'
-alias egrep='egrep --color=auto'
 alias ps="ps --sort=start_time"
 alias v="vim"
 alias e="emacs -nw"
@@ -984,7 +980,7 @@ herokupointdns(){
 LOADED+=('f')
 f(){
 	hr
-	echo VERSION:2020-05-26 14:54:22.243082900
+	echo VERSION:2020-05-26 23:53:26.N
 	hr
 }
 #!/bin/bash
@@ -1501,20 +1497,21 @@ PORT := 65535
 all:
 	@echo make dockerfile,dockerbuild,build,rm,enable,disable,ps,run,stop,bash
 dockerfile:
-	@echo -e 'FROM centos/systemd'>>Dockerfile
-	@echo -e 'RUN yum -y update; yum -y install curl libcurl-devel openssl-devel wget nano vim git expect zip jq httpd httpd-devel mod_ssl; yum clean all; systemctl enable httpd.service'>>Dockerfile
-	@echo -e 'RUN yum -y install http://rpms.famillecollet.com/enterprise/remi-release-7.rpm'>>Dockerfile
-	@echo -e 'RUN yum -y install --enablerepo=remi,remi-php72 php php-mbstring php-pdo php-gd php-pecl-redis php-mysql php-pecl-mcrypt'>>Dockerfile
-	@echo -e 'RUN echo "<VirtualHost *:80>">>/etc/httpd/conf.d/vhost.00-default.conf'>>Dockerfile
-	@echo -e 'RUN echo "ServerName __default__">>/etc/httpd/conf.d/vhost.00-default.conf'>>Dockerfile
-	@echo -e 'RUN echo "DocumentRoot /var/www/html">>/etc/httpd/conf.d/vhost.00-default.conf'>>Dockerfile
-	@echo -e 'RUN echo "<Directory /var/www/html>">>/etc/httpd/conf.d/vhost.00-default.conf'>>Dockerfile
-	@echo -e 'RUN echo "Options Indexes FollowSymLinks">>/etc/httpd/conf.d/vhost.00-default.conf'>>Dockerfile
-	@echo -e 'RUN echo "AllowOverride All">>/etc/httpd/conf.d/vhost.00-default.conf'>>Dockerfile
-	@echo -e 'RUN echo "</Directory>">>/etc/httpd/conf.d/vhost.00-default.conf'>>Dockerfile
-	@echo -e 'RUN echo "</VirtualHost>">>/etc/httpd/conf.d/vhost.00-default.conf'>>Dockerfile
-	@echo -e 'COPY override/ /'>>Dockerfile
-	@echo -e 'CMD ["/usr/sbin/init"]'>>Dockerfile
+	@echo ''>Dockerfile
+	@echo 'FROM centos/systemd'>>Dockerfile
+	@echo 'RUN yum -y update; yum -y install curl libcurl-devel openssl-devel wget nano vim git expect zip jq httpd httpd-devel mod_ssl; yum clean all; systemctl enable httpd.service'>>Dockerfile
+	@echo 'RUN yum -y install http://rpms.famillecollet.com/enterprise/remi-release-7.rpm'>>Dockerfile
+	@echo 'RUN yum -y install --enablerepo=remi,remi-php72 php php-mbstring php-pdo php-gd php-pecl-redis php-mysql php-pecl-mcrypt'>>Dockerfile
+	@echo 'RUN echo "<VirtualHost *:80>">>/etc/httpd/conf.d/vhost.00-default.conf'>>Dockerfile
+	@echo 'RUN echo "ServerName __default__">>/etc/httpd/conf.d/vhost.00-default.conf'>>Dockerfile
+	@echo 'RUN echo "DocumentRoot /var/www/html">>/etc/httpd/conf.d/vhost.00-default.conf'>>Dockerfile
+	@echo 'RUN echo "<Directory /var/www/html>">>/etc/httpd/conf.d/vhost.00-default.conf'>>Dockerfile
+	@echo 'RUN echo "Options Indexes FollowSymLinks">>/etc/httpd/conf.d/vhost.00-default.conf'>>Dockerfile
+	@echo 'RUN echo "AllowOverride All">>/etc/httpd/conf.d/vhost.00-default.conf'>>Dockerfile
+	@echo 'RUN echo "</Directory>">>/etc/httpd/conf.d/vhost.00-default.conf'>>Dockerfile
+	@echo 'RUN echo "</VirtualHost>">>/etc/httpd/conf.d/vhost.00-default.conf'>>Dockerfile
+	@echo 'COPY override/ /'>>Dockerfile
+	@echo 'CMD ["/usr/sbin/init"]'>>Dockerfile
 dockerbuild:
 	@mkdir -p override
 	sudo docker build --rm \
