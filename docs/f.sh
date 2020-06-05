@@ -981,7 +981,7 @@ herokupointdns(){
 LOADED+=('f')
 f(){
 	hr
-	echo VERSION:2020-06-06 06:26:10.684668800
+	echo VERSION:2020-06-06 06:54:22.467522200
 	hr
 }
 #!/bin/bash
@@ -1577,6 +1577,8 @@ cat << 'EOF' > $OUTPUT
 #EOF"
 #readonly DRYRUN=true
 #if "${DRYRUN}"; then echo "DRYRUN"; fi
+#is_ok() { return 0; }
+#is_ok "ARG" && echo "OK" || echo "NG" && exit 1
 echo "complete"
 EOF
 chmod +x $OUTPUT

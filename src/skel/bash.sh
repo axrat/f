@@ -9,6 +9,8 @@ cat << 'EOF' > $OUTPUT
 #EOF"
 #readonly DRYRUN=true
 #if "${DRYRUN}"; then echo "DRYRUN"; fi
+#is_ok() { return 0; }
+#is_ok "ARG" && echo "OK" || echo "NG" && exit 1
 echo "complete"
 EOF
 chmod +x $OUTPUT
