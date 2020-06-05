@@ -54,6 +54,7 @@ wgetgithub(){
 alias ll='ls -alFh'
 alias la='ls -A'
 alias l='ls -cf'
+alias watch='watch -d -n 3'
 alias ps="ps --sort=start_time"
 alias v="vim"
 alias e="emacs -nw"
@@ -980,7 +981,7 @@ herokupointdns(){
 LOADED+=('f')
 f(){
 	hr
-	echo VERSION:2020-05-26 23:53:26.N
+	echo VERSION:2020-06-06 04:02:39.922843300
 	hr
 }
 #!/bin/bash
