@@ -7,8 +7,11 @@ cat << 'EOF' > $OUTPUT
 #sudo bash -c "cat << 'EOF' > ok
 #$(date +%Y%m%d%H%M%S)
 #EOF"
+#readonly DRYRUN=true
+#if "${DRYRUN}"; then echo "DRYRUN"; fi
 echo "complete"
 EOF
 chmod +x $OUTPUT
 fi
 }
+
