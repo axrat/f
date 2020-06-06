@@ -800,6 +800,23 @@ done
 echo $HEADER
 echo "diff -rs --speed-large-files $TEST_DIR [DIR]"
 }
+pe(){
+  if type "xclip" > /dev/null 2>&1; then
+    echo "Found xclip"
+  else
+    echo "Not Found xclip"
+    read -p "apt isntall ? (y/N): " yn
+    case "$yn" in
+      [yY]*)
+        sudo apt -y install xclip
+      ;;
+      *) echo "abort";;
+    esac
+    exit 1
+  fi
+  echo xclip -o -selection clipboard > a.txt
+}
+
 #!/bin/bash
 gitremoteadd(){
   if [ $# -ne 3 ]; then
@@ -1030,7 +1047,7 @@ herokupointdns(){
 LOADED+=('f')
 f(){
 	hr
-	echo VERSION:2020-06-06 13:50:37.718139800
+	echo VERSION:2020-06-06 14:27:30.604819500
 	hr
 }
 #!/bin/bash

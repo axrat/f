@@ -442,3 +442,20 @@ done
 echo $HEADER
 echo "diff -rs --speed-large-files $TEST_DIR [DIR]"
 }
+pe(){
+  if type "xclip" > /dev/null 2>&1; then
+    echo "Found xclip"
+  else
+    echo "Not Found xclip"
+    read -p "apt isntall ? (y/N): " yn
+    case "$yn" in
+      [yY]*)
+        sudo apt -y install xclip
+      ;;
+      *) echo "abort";;
+    esac
+    exit 1
+  fi
+  echo xclip -o -selection clipboard > a.txt
+}
+
