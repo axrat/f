@@ -439,18 +439,3 @@ purge(){
   fi
 
 }
-pe(){
-    if type "xclip" > /dev/null 2>&1; then
-      echo "Found xclip"
-      xclip -selection clipboard -o
-    else
-      echo "Not Found xclip"
-      read -p "apt isntall ? (y/N): " yn
-      case "$yn" in
-        [yY]*)
-          sudo apt -y install xclip
-        ;;
-        *) echo "abort";;
-      esac
-    fi
-	}
