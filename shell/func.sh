@@ -442,16 +442,22 @@ purge(){
 pe(){
   if type "xclip" > /dev/null 2>&1; then
     echo "Found xclip"
-    echo xclip -o -selection clipboard > a.txt
+    xclip -selection clipboard -o > a.txt
   else
     echo "Not Found xclip"
-    read -p "apt isntall ? (y/N): " yn
-    case "$yn" in
-      [yY]*)
-        sudo apt -y install xclip
-      ;;
-      *) echo "abort";;
-    esac
+    if type "xsel" > /dev/null 2>&1; then
+      echo "Found xsel"
+      xsel -bo > a.txt
+    else
+      echo "Not Found xsel"
+      read -p "apt isntall ? (y/N): " yn
+      case "$yn" in
+        [yY]*)
+          sudo apt -y install xclip xsel
+        ;;
+        *) echo "abort";;
+      esac
+    fi
   fi
 }
 
