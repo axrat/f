@@ -1030,7 +1030,7 @@ herokupointdns(){
 LOADED+=('f')
 f(){
 	hr
-	echo VERSION:2020-06-06 16:18:57.128524700
+	echo VERSION:2020-06-06 16:24:27.304268200
 	hr
 }
 #!/bin/bash
@@ -1549,7 +1549,7 @@ all:
 dockerfile:
 	@echo ''>Dockerfile
 	@echo 'FROM centos/systemd'>>Dockerfile
-	@echo 'RUN yum -y update; yum -y install curl libcurl-devel openssl-devel wget nano vim git expect zip jq httpd httpd-devel mod_ssl; yum clean all; systemctl enable httpd.service'>>Dockerfile
+	@echo 'RUN yum -y update; yum -y install curl libcurl-devel openssl-devel wget nano vim git expect zip jq nkf httpd httpd-devel mod_ssl; yum clean all; systemctl enable httpd.service'>>Dockerfile
 	@echo 'RUN yum -y install http://rpms.famillecollet.com/enterprise/remi-release-7.rpm'>>Dockerfile
 	@echo 'RUN yum -y install --enablerepo=remi,remi-php72 php php-mbstring php-pdo php-gd php-pecl-redis php-mysql php-pecl-mcrypt'>>Dockerfile
 	@echo 'RUN echo "<VirtualHost *:80>">>/etc/httpd/conf.d/vhost.00-default.conf'>>Dockerfile
