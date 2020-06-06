@@ -751,6 +751,55 @@ tmuxexit(){
 winry(){
   vim +":source ~/.vim/dein/repos/github.com/axrat/winry.vim/plugin/winry.vim " +:q
 }
+purge(){
+readonly DRYRUN=false
+#BASE=$(cd $(dirname $0); pwd)
+BASE=$(pwd)
+HEADER="####################################################################################################"
+A="a.txt"
+A_NO_MAX=$([ `wc -c < $A` -eq 0 ] && echo 0 || ([ `tail -c 1 $A | wc -l` -eq 1 ] && wc -l < $A || expr `wc -l < $A` + 1))
+TEST_DIR="$BASE/_a"
+
+if [ ! -f "$A" ]; then
+  echo "not found $A"
+  exit 1
+fi
+
+echo $HEADER
+mkdir -p $TEST_DIR
+##
+
+AR=($(grep -e ^"$HEADER"$ -n $A | sed -e 's/:.*//g'))
+for i in "${!AR[@]}"; do
+  #printf '${AR[%s]}=%s\n' "$i" "${AR[i]}"
+  _NEXT=`expr $i \+ 1`
+  _START=`expr ${AR[$i]} \+ 2`
+  _NAME=$(head -n `expr ${AR[$i]} \+ 1` $A | tail -n 1)
+  if [ `expr ${#AR[@]} \- 1` -eq $i ];then
+    #echo "last"
+    _END=$A_NO_MAX
+  else
+    _END=`expr ${AR[$_NEXT]} \- 1`
+  fi
+  ##empty
+  if [ $_START -gt $_END ];then
+    _END=$_START
+  fi
+  echo "$_NAME#L$_START-L$_END"
+  _OUT="$TEST_DIR/$_NAME"
+  _CMD="sed -n ${_START},${_END}p $A >> $_OUT"
+  echo " => $_CMD"
+  if ! "${DRYRUN}"; then
+    :> $_OUT
+    eval "${_CMD}"
+  fi
+done
+
+##
+#rm -rf $TEST_DIR
+echo $HEADER
+echo "diff -rs --speed-large-files $TEST_DIR [DIR]"
+}
 #!/bin/bash
 gitremoteadd(){
   if [ $# -ne 3 ]; then
@@ -981,7 +1030,7 @@ herokupointdns(){
 LOADED+=('f')
 f(){
 	hr
-	echo VERSION:2020-06-06 06:54:22.467522200
+	echo VERSION:2020-06-06 13:50:37.718139800
 	hr
 }
 #!/bin/bash
