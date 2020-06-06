@@ -1,4 +1,7 @@
 #!/bin/bash
+fupdate(){
+  curl https://axrat.github.io/f/f.sh -o f.sh
+}
 fadd(){
   git add .
 }

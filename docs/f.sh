@@ -63,7 +63,7 @@ alias sall='git status --untracked-files=all'
 ks(){
   echo "Oops!"
 }
-meke(){
+mike(){
   echo "Nyan!"
 }
 #!/bin/bash
@@ -239,6 +239,9 @@ requireSudo(){
 }
 
 #!/bin/bash
+fupdate(){
+  curl https://axrat.github.io/f/f.sh -o f.sh
+}
 fadd(){
   git add .
 }
@@ -1047,7 +1050,7 @@ herokupointdns(){
 LOADED+=('f')
 f(){
 	hr
-	echo VERSION:2020-06-06 14:27:30.604819500
+	echo VERSION:2020-06-06 14:47:07.294885400
 	hr
 }
 #!/bin/bash

@@ -11,6 +11,6 @@ alias sall='git status --untracked-files=all'
 ks(){
   echo "Oops!"
 }
-meke(){
+mike(){
   echo "Nyan!"
 }

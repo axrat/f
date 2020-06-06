@@ -1,12 +1,14 @@
-# z
+# f
+
+### curl
+```
+curl https://axrat.github.io/f/f.sh -o f.sh
+```
 
 ### wget
 ```
-wget github.io/axrat/f/f.sh
-```
-### download
-```
-sudo wget https://axrat.github.io/f/f.sh --no-check-certificate -O f.sh && sudo chmod +x f.sh
+wget github.io/axrat/f/f.sh --no-check-certificate -O f.sh && chmod +x f.sh
+
 ```
 ### ~/.bashrc
 ```
