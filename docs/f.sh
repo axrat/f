@@ -496,7 +496,7 @@ gitskiprevert(){
 gitskipcheck(){
   git ls-files -v | grep ^S
 }
-gitresethard(){
+gitinitialize(){
 if [ $# -ne 3 ]; then
   echo "require args : [repo_host],[repo_user],[repo_name] $#/3" 1>&2
 else
@@ -505,6 +505,9 @@ else
   git pull origin master
   git reset --hard origin/master
 fi
+}
+gitresethard(){
+  git reset --hard origin/master
 }
 githubpullreset(){
 if ! type "git" > /dev/null 2>&1; then
@@ -1025,9 +1028,9 @@ echo "plz relogin"
 #!/bin/bash
 LOADED+=('f')
 f(){
-	hr
-	echo VERSION:2020-06-14 12:58:13.816613520
-	hr
+  hr
+  echo VERSION:2020-06-14 19:00:58.981926035
+  hr
 }
 #!/bin/bash
 function arch1(){

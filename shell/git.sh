@@ -154,7 +154,7 @@ gitskiprevert(){
 gitskipcheck(){
   git ls-files -v | grep ^S
 }
-gitresethard(){
+gitinitialize(){
 if [ $# -ne 3 ]; then
   echo "require args : [repo_host],[repo_user],[repo_name] $#/3" 1>&2
 else
@@ -163,6 +163,9 @@ else
   git pull origin master
   git reset --hard origin/master
 fi
+}
+gitresethard(){
+  git reset --hard origin/master
 }
 githubpullreset(){
 if ! type "git" > /dev/null 2>&1; then
