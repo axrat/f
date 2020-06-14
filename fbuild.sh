@@ -19,18 +19,19 @@ bash -c "cat << 'EOF' > $PWD/build/f
 #!/bin/bash
 LOADED+=('f')
 f(){
-	hr
-	echo VERSION:$NOW
-	hr
+  hr
+  echo VERSION:$NOW
+  hr
 }
 EOF"
+
 cat \
-	$PWD/require/*.sh \
-	$PWD/include/*.sh \
-	$PWD/shell/*.sh \
-	$PWD/build/f \
-	$PWD/build/*.sh \
-	> $PWD/docs/f.sh
+  $PWD/require/*.sh \
+  $PWD/include/*.sh \
+  $PWD/shell/*.sh \
+  $PWD/build/f \
+  $PWD/build/*.sh \
+  > $PWD/docs/f.sh
 
 chmod +x $PWD/docs/f.sh
 echo "build at $NOW"

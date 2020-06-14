@@ -154,7 +154,7 @@ gitskiprevert(){
 gitskipcheck(){
   git ls-files -v | grep ^S
 }
-gitinitreset(){
+gitresethard(){
 if [ $# -ne 3 ]; then
   echo "require args : [repo_host],[repo_user],[repo_name] $#/3" 1>&2
 else
@@ -180,5 +180,18 @@ else
   git reset --hard origin/master
   cd $OLDPWD
 fi
+}
+gitsubmoduleadd(){
+  if [ $# -ne 3 ]; then
+    echo "Require [RepoHost],[RepoUser],[RepoName]"
+  else
+	git submodule add https://$1/$2/$3.git $3
+  fi
+}
+gitsubmoduleinit(){
+  git submodule update --init --recursive
+}
+gitsubmoduleupdate(){
+  git submodule foreach 'git pull origin master --allow-unrelated-histories'
 }
 

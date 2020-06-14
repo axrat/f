@@ -341,24 +341,229 @@ fless(){
 
 
 #!/bin/bash
-forParentDir(){
-  sudo chmod 777 ../`pwd | awk -F "/" '{ print $NF }'`
+gitremoteadd(){
+  if [ $# -ne 3 ]; then
+    echo "require [host],[repo_user],[repo_name]" 1>&2
+  else
+    git remote add origin https://$1/$2/$3.git
+  fi
 }
-forSudo(){
-chown root:root /usr/bin/sudo && chmod 4755 /usr/bin/sudo
-chmod u+s "$(command -v su)" "$(command -v sudo)"
+ssh-github(){
+  ssh -T git@github.com
 }
-forNodejs(){
-sudo chown -R $(whoami) $(npm config get prefix)/lib/node_modules
-#rm -rf node_modules/ && npm cache clean && npm install
-#sudo chmod 770 $NVM_DIR -R
+ssh-bitbucket(){
+  ssh -T git@bitbucket.org
 }
-forDocker(){
-sudo groupadd docker
-sudo gpasswd -a $USER docker
-sudo systemctl restart docker
-echo "plz relogin"
+hideandseek(){
+echo -n "Are you sure? [y]: "
+read ans
+case $ans in
+  '' | y* | Y* )
+
+git filter-branch -f --index-filter '
+git rm -rf --cached --ignore-unmatch * 
+' HEAD
+git filter-branch -f --index-filter '
+touch .hidden | git add .hidden 
+' HEAD
+git reflog expire --expire=now --all
+git gc --aggressive --prune=now
+
+    ;;
+  * )
+    ;;
+esac
 }
+gitoverride(){
+git checkout --orphan tmp
+git commit -m "override"
+git checkout -B master
+git branch -d tmp
+git push -f --set-upstream origin master
+}
+seturl(){
+git remote add     origin $1
+git remote set-url origin $1
+}
+gitshallow(){
+git clone --depth 1 $1
+}
+gitunshallow(){
+git fetch --unshallow
+}
+gitchangecommiter(){
+USERNAME=onoie
+USEREMAIL=onoie3@gmail.com
+git filter-branch -f --env-filter "GIT_AUTHOR_NAME='${USERNAME}'; GIT_AUTHOR_EMAIL='${USEREMAIL}'; GIT_COMMITTER_NAME='${USERNAME}'; GIT_COMMITTER_EMAIL='${USEREMAIL}';" HEAD
+}
+gitrepositorymerge(){
+if [ $# -ne 1 ]; then
+  echo "require local target repository path" 1>&2
+  echo "Ex) [~/repos/repo]" 1>&2
+  exit 1
+fi
+REPO_URL=$1
+SUBDIR=$(basename $REPO_URL)
+git fetch $REPO_URL/.git refs/heads/master:refs/heads/$SUBDIR
+git filter-branch -f --tree-filter '
+[ -d ${SUBDIR} ] || mkdir -p ${SUBDIR};
+find . -mindepth 1 -maxdepth 1 ! -path ./${SUBDIR} | xargs -i{} mv -f {} ${SUBDIR}
+' $SUBDIR
+git merge --allow-unrelated-histories --no-ff $SUBDIR
+}
+gitchangecommitmessage(){
+  MSG=${@:-"### private commit message ###"}
+  git filter-branch --msg-filter "echo '${MSG}';" -f
+}
+creategithubgrasssvg(){
+curl https://github.com/$1 | awk '/<svg.+class="js-calendar-graph-svg"/,/svg>/' | sed -e 's/<svg/<svg xmlns="http:\/\/www.w3.org\/2000\/svg"/' > $1.svg
+}
+clone(){
+  if [ $# -ne 5 ]; then
+    echo "Require [RepositoryHost]:[Username]/[RepositoryName].git"
+    echo "git local [GitUsername] [GitEmail]"
+  else
+    git clone git@$1:$2/$3.git
+    cd $3
+    git config --local user.name "$4"
+    git config --local user.email "$5"
+  fi
+}
+getLastCommitMessage(){
+  if [ $# -ne 3 ]; then
+    echo "require [host],[user],[repository]"
+  else
+  HOST=$1
+  USER=$2
+  REPO=$3
+  curl https://$HOST/$USER/$REPO \
+   | sed -n -e "/<div class=\"commit-tease js-details-container Details\">/,/<\/div>/p" \
+   | grep title \
+   | awk '{print substr($0, index($0, ">"))}' \
+   | awk '{sub("<.*", "");print $0;}' \
+   | cut -c 2-
+  fi
+}
+gitrmremotebranch(){
+  if [ $# -ne 1 ]; then
+    echo "Require [branch]"
+  else
+    git push --delete origin $1
+  fi
+}
+getGithubPublicRepositoryViaAPI(){
+curl https://api.github.com/users/onoie/repos
+}
+getGithubPrivateRepositoryViaAPI(){
+ACCESS_TOKEN=$1
+ORG=$2
+curl -u :${ACCESS_TOKEN} https://api.github.com/orgs/$ORG{}/repos
+curl -H 'Authorization: token ${ACCESS_TOKEN}' https://api.github.com/orgs/$ORG/repos
+curl 'https://api.github.com/orgs/${ORG}/repos?access_token=${ACCESS_TOKEN}'
+}
+gitcreateremotebranch(){
+  if [ $# -ne 1 ]; then
+    echo "Require [branch]"
+  else
+    git branch $1
+	git checkout $1
+	git branch --all
+	git push origin master:$1
+  fi
+}
+gitdeleteremotebranch(){
+  if [ $# -ne 1 ]; then
+    echo "Require [branch]"
+  else
+    git branch -d $1
+	git push --delete origin $1
+  fi
+}
+gitskip(){
+  if [ $# -ne 1 ]; then
+    echo "Require [filepath]"
+  else
+    git update-index --skip-worktree $1
+  fi
+}
+gitskiprevert(){
+  if [ $# -ne 1 ]; then
+    echo "Require [filepath]"
+  else
+    git update-index --no-skip-worktree $1
+  fi
+}
+gitskipcheck(){
+  git ls-files -v | grep ^S
+}
+gitresethard(){
+if [ $# -ne 3 ]; then
+  echo "require args : [repo_host],[repo_user],[repo_name] $#/3" 1>&2
+else
+  git init
+  git remote add origin git@$1:$2/$3.git
+  git pull origin master
+  git reset --hard origin/master
+fi
+}
+githubpullreset(){
+if ! type "git" > /dev/null 2>&1; then
+  echo "git command not found"
+else
+  if [ $# -ne 3 ]; then
+    echo "require args : [repo_user],[repo_name],[repo_directory] $#/3" 1>&2
+  fi
+  mkdir -p $3
+  cd $3
+  OLDPWD="$(cd -)"
+  git init
+  git remote add origin https://github.com/$1/$2.git
+  git pull origin master
+  git reset --hard origin/master
+  cd $OLDPWD
+fi
+}
+gitsubmoduleadd(){
+  if [ $# -ne 3 ]; then
+    echo "Require [RepoHost],[RepoUser],[RepoName]"
+  else
+	git submodule add https://$1/$2/$3.git $3
+  fi
+}
+gitsubmoduleinit(){
+  git submodule update --init --recursive
+}
+gitsubmoduleupdate(){
+  git submodule foreach 'git pull origin master --allow-unrelated-histories'
+}
+
+#!/bin/bash
+herokupush(){
+  git push heroku master
+}
+herokuremoteadd(){
+  if [ $# -ne 1 ]; then
+    echo "Require [app].herokuapp.com "
+  else
+    git remote add heroku https://git.heroku.com/$1.git
+  fi
+}
+herokubuildpack(){
+  if [ $# -ne 2 ]; then
+    echo "Require [app] for buildpack heroku/[lang]"
+  else
+    heroku buildpacks:set heroku/$2 --app $1
+    heroku addons:create heroku-postgresql:hobby-dev --app $1
+  fi
+}
+herokupointdns(){
+  if [ $# -ne 1 ]; then
+    echo "Require [app].herokuapp.com "
+  else
+    heroku addons:add pointdns --app $1
+  fi
+}
+
 #!/bin/bash
 alignleft(){ printf "%-${COLUMNS}s\n" $1; }
 alignright(){ printf "%${COLUMNS}s\n" $1; }
@@ -798,239 +1003,30 @@ purge(){
     echo $HEADER
     echo "diff -rs --speed-large-files $TEST_DIR [DIR]"
   fi
-
 }
-#!/bin/bash
-gitremoteadd(){
-  if [ $# -ne 3 ]; then
-    echo "require [host],[repo_user],[repo_name]" 1>&2
-  else
-    git remote add origin https://$1/$2/$3.git
-  fi
+forParentDir(){
+  sudo chmod 777 ../`pwd | awk -F "/" '{ print $NF }'`
 }
-ssh-github(){
-  ssh -T git@github.com
+forSudo(){
+chown root:root /usr/bin/sudo && chmod 4755 /usr/bin/sudo
+chmod u+s "$(command -v su)" "$(command -v sudo)"
 }
-ssh-bitbucket(){
-  ssh -T git@bitbucket.org
+forNodejs(){
+sudo chown -R $(whoami) $(npm config get prefix)/lib/node_modules
+#rm -rf node_modules/ && npm cache clean && npm install
+#sudo chmod 770 $NVM_DIR -R
 }
-hideandseek(){
-echo -n "Are you sure? [y]: "
-read ans
-case $ans in
-  '' | y* | Y* )
-
-git filter-branch -f --index-filter '
-git rm -rf --cached --ignore-unmatch * 
-' HEAD
-git filter-branch -f --index-filter '
-touch .hidden | git add .hidden 
-' HEAD
-git reflog expire --expire=now --all
-git gc --aggressive --prune=now
-
-    ;;
-  * )
-    ;;
-esac
+forDocker(){
+sudo groupadd docker
+sudo gpasswd -a $USER docker
+sudo systemctl restart docker
+echo "plz relogin"
 }
-gitoverride(){
-git checkout --orphan tmp
-git commit -m "override"
-git checkout -B master
-git branch -d tmp
-git push -f --set-upstream origin master
-}
-seturl(){
-git remote add     origin $1
-git remote set-url origin $1
-}
-gitshallow(){
-git clone --depth 1 $1
-}
-gitunshallow(){
-git fetch --unshallow
-}
-gitchangecommiter(){
-USERNAME=onoie
-USEREMAIL=onoie3@gmail.com
-git filter-branch -f --env-filter "GIT_AUTHOR_NAME='${USERNAME}'; GIT_AUTHOR_EMAIL='${USEREMAIL}'; GIT_COMMITTER_NAME='${USERNAME}'; GIT_COMMITTER_EMAIL='${USEREMAIL}';" HEAD
-}
-gitrepositorymerge(){
-if [ $# -ne 1 ]; then
-  echo "require local target repository path" 1>&2
-  echo "Ex) [~/repos/repo]" 1>&2
-  exit 1
-fi
-REPO_URL=$1
-SUBDIR=$(basename $REPO_URL)
-git fetch $REPO_URL/.git refs/heads/master:refs/heads/$SUBDIR
-git filter-branch -f --tree-filter '
-[ -d ${SUBDIR} ] || mkdir -p ${SUBDIR};
-find . -mindepth 1 -maxdepth 1 ! -path ./${SUBDIR} | xargs -i{} mv -f {} ${SUBDIR}
-' $SUBDIR
-git merge --allow-unrelated-histories --no-ff $SUBDIR
-}
-gitchangecommitmessage(){
-  MSG=${@:-"### private commit message ###"}
-  git filter-branch --msg-filter "echo '${MSG}';" -f
-}
-creategithubgrasssvg(){
-curl https://github.com/$1 | awk '/<svg.+class="js-calendar-graph-svg"/,/svg>/' | sed -e 's/<svg/<svg xmlns="http:\/\/www.w3.org\/2000\/svg"/' > $1.svg
-}
-clone(){
-  if [ $# -ne 5 ]; then
-    echo "Require [RepositoryHost]:[Username]/[RepositoryName].git"
-    echo "git local [GitUsername] [GitEmail]"
-  else
-    git clone git@$1:$2/$3.git
-    cd $3
-    git config --local user.name "$4"
-    git config --local user.email "$5"
-  fi
-}
-getLastCommitMessage(){
-  if [ $# -ne 3 ]; then
-    echo "require [host],[user],[repository]"
-  else
-  HOST=$1
-  USER=$2
-  REPO=$3
-  curl https://$HOST/$USER/$REPO \
-   | sed -n -e "/<div class=\"commit-tease js-details-container Details\">/,/<\/div>/p" \
-   | grep title \
-   | awk '{print substr($0, index($0, ">"))}' \
-   | awk '{sub("<.*", "");print $0;}' \
-   | cut -c 2-
-  fi
-}
-gitrmremotebranch(){
-  if [ $# -ne 1 ]; then
-    echo "Require [branch]"
-  else
-    git push --delete origin $1
-  fi
-}
-getGithubPublicRepositoryViaAPI(){
-curl https://api.github.com/users/onoie/repos
-}
-getGithubPrivateRepositoryViaAPI(){
-ACCESS_TOKEN=$1
-ORG=$2
-curl -u :${ACCESS_TOKEN} https://api.github.com/orgs/$ORG{}/repos
-curl -H 'Authorization: token ${ACCESS_TOKEN}' https://api.github.com/orgs/$ORG/repos
-curl 'https://api.github.com/orgs/${ORG}/repos?access_token=${ACCESS_TOKEN}'
-}
-gitcreateremotebranch(){
-  if [ $# -ne 1 ]; then
-    echo "Require [branch]"
-  else
-    git branch $1
-	git checkout $1
-	git branch --all
-	git push origin master:$1
-  fi
-}
-gitdeleteremotebranch(){
-  if [ $# -ne 1 ]; then
-    echo "Require [branch]"
-  else
-    git branch -d $1
-	git push --delete origin $1
-  fi
-}
-gitskip(){
-  if [ $# -ne 1 ]; then
-    echo "Require [filepath]"
-  else
-    git update-index --skip-worktree $1
-  fi
-}
-gitskiprevert(){
-  if [ $# -ne 1 ]; then
-    echo "Require [filepath]"
-  else
-    git update-index --no-skip-worktree $1
-  fi
-}
-gitskipcheck(){
-  git ls-files -v | grep ^S
-}
-gitinitreset(){
-if [ $# -ne 3 ]; then
-  echo "require args : [repo_host],[repo_user],[repo_name] $#/3" 1>&2
-else
-  git init
-  git remote add origin git@$1:$2/$3.git
-  git pull origin master
-  git reset --hard origin/master
-fi
-}
-githubpullreset(){
-if ! type "git" > /dev/null 2>&1; then
-  echo "git command not found"
-else
-  if [ $# -ne 3 ]; then
-    echo "require args : [repo_user],[repo_name],[repo_directory] $#/3" 1>&2
-  fi
-  mkdir -p $3
-  cd $3
-  OLDPWD="$(cd -)"
-  git init
-  git remote add origin https://github.com/$1/$2.git
-  git pull origin master
-  git reset --hard origin/master
-  cd $OLDPWD
-fi
-}
-
-#!/bin/bash
-gitsubmoduleadd(){
-  if [ $# -ne 3 ]; then
-    echo "Require [RepoHost],[RepoUser],[RepoName]"
-  else
-	git submodule add https://$1/$2/$3.git $3
-  fi
-}
-gitsubmoduleinit(){
-  git submodule update --init --recursive
-}
-gitsubmoduleupdate(){
-  git submodule foreach 'git pull origin master --allow-unrelated-histories'
-}
-
-#!/bin/bash
-herokupush(){
-  git push heroku master
-}
-herokuremoteadd(){
-  if [ $# -ne 1 ]; then
-    echo "Require [app].herokuapp.com "
-  else
-    git remote add heroku https://git.heroku.com/$1.git
-  fi
-}
-herokubuildpack(){
-  if [ $# -ne 2 ]; then
-    echo "Require [app] for buildpack heroku/[lang]"
-  else
-    heroku buildpacks:set heroku/$2 --app $1
-    heroku addons:create heroku-postgresql:hobby-dev --app $1
-  fi
-}
-herokupointdns(){
-  if [ $# -ne 1 ]; then
-    echo "Require [app].herokuapp.com "
-  else
-    heroku addons:add pointdns --app $1
-  fi
-}
-
 #!/bin/bash
 LOADED+=('f')
 f(){
 	hr
-	echo VERSION:2020-06-11 16:28:17.670097700
+	echo VERSION:2020-06-14 12:58:13.816613520
 	hr
 }
 #!/bin/bash
