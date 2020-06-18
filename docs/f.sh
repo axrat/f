@@ -1029,7 +1029,7 @@ echo "plz relogin"
 LOADED+=('f')
 f(){
   hr
-  echo VERSION:2020-06-14 19:00:58.981926035
+  echo VERSION:2020-06-19 06:06:04.125356998
   hr
 }
 #!/bin/bash
@@ -1634,6 +1634,7 @@ OUTPUT=skel.sh
 if [ ! -f "$OUTPUT" ]; then
 cat << 'EOF' > $OUTPUT
 #!/bin/bash
+BASE=$(cd $(dirname $0); pwd)
 #sudo bash -c "cat << 'EOF' > ok
 #$(date +%Y%m%d%H%M%S)
 #EOF"
