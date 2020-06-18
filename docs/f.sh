@@ -1029,7 +1029,7 @@ echo "plz relogin"
 LOADED+=('f')
 f(){
   hr
-  echo VERSION:2020-06-19 06:06:04.125356998
+  echo VERSION:2020-06-19 06:48:11.462188909
   hr
 }
 #!/bin/bash
@@ -1652,20 +1652,16 @@ fi
 skelgo(){
 cat > main.go << 'EOF'
 package main
-import (
-	"github.com/TransAssist/goz"
-)
-import (
-	_ "github.com/mattn/go-sqlite3"
-)
+//import (
+//	_ "github.com/mattn/go-sqlite3"
+//)
 import (
 	"fmt"
 )
-
 func main() {
 	fmt.Println("HelloWorld")
-	goz.Complete()
 }
+
 EOF
 }
 #!/bin/bash
