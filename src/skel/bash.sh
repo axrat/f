@@ -12,6 +12,7 @@ BASE=$(cd $(dirname $0); pwd)
 #if "${DRYRUN}"; then echo "DRYRUN"; fi
 #is_ok() { return 0; }
 #is_ok "ARG" && echo "OK" || echo "NG" && exit 1
+#ARR=('a' 'b' 'c'); for i in "${!ARR[@]}"; do printf '${ARR[%s]}=%s\n' "$i" "${ARR[i]}"; done
 echo "complete"
 EOF
 chmod +x $OUTPUT
