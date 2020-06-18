@@ -1029,7 +1029,7 @@ echo "plz relogin"
 LOADED+=('f')
 f(){
   hr
-  echo VERSION:2020-06-19 08:28:15.062601008
+  echo VERSION:2020-06-19 08:39:02.034353739
   hr
 }
 #!/bin/bash
@@ -1635,15 +1635,18 @@ if [ ! -f "$OUTPUT" ]; then
 cat << 'EOF' > $OUTPUT
 #!/bin/bash
 BASE=$(cd $(dirname $0); pwd)
-#sudo bash -c "cat << 'EOF' > ok
-#$(date +%Y%m%d%H%M%S)
-#EOF"
-#readonly DRYRUN=true
-#if "${DRYRUN}"; then echo "DRYRUN"; fi
-#is_ok() { return 0; }
-#is_ok "ARG" && echo "OK" || echo "NG" && exit 1
+DATEID=$(date +%Y%m%d%H%M%S)
+readonly DRYRUN=false
+if "${DRYRUN}"; then echo "DRYRUN"; fi
+#if [[ -d "${DIR}" ]] ; then echo "found dirctory"; fi
 #ARR=('a' 'b' 'c'); for i in "${!ARR[@]}"; do printf '${ARR[%s]}=%s\n' "$i" "${ARR[i]}"; done
+#is_ok() { return 0; }
+#is_ok "ARGS" && echo "OK" || echo "NG" && exit 1
+#sudo bash -c "cat << 'EOF' > ok
+#$DATEID
+#EOF"
 echo "complete"
+
 EOF
 chmod +x $OUTPUT
 fi
