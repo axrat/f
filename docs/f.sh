@@ -1029,7 +1029,7 @@ echo "plz relogin"
 LOADED+=('f')
 f(){
   hr
-  echo VERSION:2020-06-19 06:48:11.462188909
+  echo VERSION:2020-06-19 07:32:15.335723689
   hr
 }
 #!/bin/bash
