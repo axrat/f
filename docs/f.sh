@@ -1029,7 +1029,7 @@ echo "plz relogin"
 LOADED+=('f')
 f(){
   hr
-  echo VERSION:2020-06-20 08:10:28.709842481
+  echo VERSION:2020-06-20 08:58:15.843033420
   hr
 }
 #!/bin/bash
@@ -1653,7 +1653,34 @@ fi
 }
 
 #!/bin/bash
-skelcsharp(){
+skelcmake(){
+OUTPUT=CMakeLists.txt
+if [ ! -f "$OUTPUT" ]; then
+cat << 'EOF' > $OUTPUT
+cmake_minimum_required(VERSION 2.8.12.2)
+project(skel CXX)
+add_executable(skelton main.cpp)
+
+EOF
+fi
+}
+
+#!/bin/bash
+skelcpp(){
+OUTPUT=skel.cpp
+if [ ! -f "$OUTPUT" ]; then
+cat << 'EOF' > $OUTPUT
+#include <iostream>
+int main() {
+  std::cout << "HelloWorld" << std::endl;
+  return 0;
+}
+EOF
+fi
+}
+
+#!/bin/bash
+skelcs(){
 OUTPUT=skel.cs
 if [ ! -f "$OUTPUT" ]; then
 cat << 'EOF' > $OUTPUT
