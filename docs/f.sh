@@ -1029,7 +1029,7 @@ echo "plz relogin"
 LOADED+=('f')
 f(){
   hr
-  echo VERSION:2020-06-19 08:39:02.034353739
+  echo VERSION:2020-06-20 08:10:28.709842481
   hr
 }
 #!/bin/bash
@@ -1649,6 +1649,21 @@ echo "complete"
 
 EOF
 chmod +x $OUTPUT
+fi
+}
+
+#!/bin/bash
+skelcsharp(){
+OUTPUT=skel.cs
+if [ ! -f "$OUTPUT" ]; then
+cat << 'EOF' > $OUTPUT
+using System;
+public class HelloWorld {
+    public static void Main(string[] args){
+        Console.WriteLine ("HelloWorld");
+    }
+}
+EOF
 fi
 }
 
