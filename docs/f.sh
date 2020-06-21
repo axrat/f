@@ -1029,7 +1029,7 @@ echo "plz relogin"
 LOADED+=('f')
 f(){
   hr
-  echo VERSION:2020-06-20 08:58:15.843033420
+  echo VERSION:2020-06-22 06:23:20.008917392
   hr
 }
 #!/bin/bash
@@ -1680,7 +1680,7 @@ fi
 }
 
 #!/bin/bash
-skelcs(){
+skelcsharp(){
 OUTPUT=skel.cs
 if [ ! -f "$OUTPUT" ]; then
 cat << 'EOF' > $OUTPUT
@@ -1750,6 +1750,20 @@ cat << 'EOF' > $OUTPUT
 EOF
 fi
 }
+#!/bin/bash
+skelperl(){
+OUTPUT=skel.pl
+if [ ! -f "$OUTPUT" ]; then
+cat << 'EOF' > $OUTPUT
+#!/usr/bin/perl
+print "Content-type: text/html\n\n";
+print "HelloWorld\n";
+
+EOF
+chmod 755 $OUTPUT
+fi
+}
+
 #!/bin/bash
 skelphp(){
 cat > info.php << 'EOF'

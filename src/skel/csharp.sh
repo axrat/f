@@ -1,5 +1,5 @@
 #!/bin/bash
-skelcs(){
+skelcsharp(){
 OUTPUT=skel.cs
 if [ ! -f "$OUTPUT" ]; then
 cat << 'EOF' > $OUTPUT
