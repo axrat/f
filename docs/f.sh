@@ -1025,11 +1025,14 @@ sudo gpasswd -a $USER docker
 sudo systemctl restart docker
 echo "plz relogin"
 }
+directory_size(){
+  du --separate-dirs -h --total $(pwd)/*/
+}
 #!/bin/bash
 LOADED+=('f')
 f(){
   hr
-  echo VERSION:2020-06-22 06:23:20.008917392
+  echo VERSION:2020-07-18 00:04:10.431749070
   hr
 }
 #!/bin/bash

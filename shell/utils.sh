@@ -456,3 +456,6 @@ sudo gpasswd -a $USER docker
 sudo systemctl restart docker
 echo "plz relogin"
 }
+directory_size(){
+  du --separate-dirs -h --total $(pwd)/*/
+}
