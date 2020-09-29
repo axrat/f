@@ -6,6 +6,12 @@ cat << 'EOF' > $OUTPUT
 #!/bin/bash
 BASE=$(cd $(dirname $0); pwd)
 DATEID=$(date +%Y%m%d%H%M%S)
+if [ $# -ne 3 ]; then
+  echo "require args:$#/3"
+  exit 1
+else
+  echo "$1,$2,$3"
+fi
 readonly DRYRUN=false
 if "${DRYRUN}"; then echo "DRYRUN"; fi
 #if [[ -d "${DIR}" ]] ; then echo "found dirctory"; fi
