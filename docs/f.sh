@@ -1032,7 +1032,7 @@ directory_size(){
 LOADED+=('f')
 f(){
   hr
-  echo VERSION:2020-09-30 07:53:43.912351570
+  echo VERSION:2020-09-30 07:56:17.315459680
   hr
 }
 #!/bin/bash
@@ -1639,11 +1639,10 @@ cat << 'EOF' > $OUTPUT
 #!/bin/bash
 BASE=$(cd $(dirname $0); pwd)
 DATEID=$(date +%Y%m%d%H%M%S)
-if [ $# -ne 3 ]; then
-  echo "require args:$#/3"
-  exit 1
+if [ $# -ne 1 ]; then
+  echo "require args:$#/1"
 else
-  echo "$1,$2,$3"
+  echo "$1"
 fi
 readonly DRYRUN=false
 if "${DRYRUN}"; then echo "DRYRUN"; fi
@@ -1840,10 +1839,10 @@ sudo service docker start
 dockerphp72apache80(){
   if [ $# -ne 1 ]; then
     echo "require args:$#/1"
-    exit 1
+  else
+    mkdir -p www
+    sudo docker run -d --name $1 -p 80:80 -v "$PWD":/var/www php:7.2-apache
   fi
-  mkdir -p www
-  sudo docker run -d --name $1 -p 80:80 -v "$PWD":/var/www php:7.2-apache
 }
 dockerphp72apache80www(){
   mkdir -p www
