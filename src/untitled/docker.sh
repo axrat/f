@@ -18,12 +18,11 @@ sudo cgroupfs-mount
 #restart terminal for admin privilege
 sudo service docker start
 }
-dockerphp72apache80(){
-  if [ $# -ne 1 ]; then
-    echo "require args:$#/1"
+dockerphp72apache80html(){
+  if [ $# -ne 2 ]; then
+    echo "require name,port:$#/2"
   else
-    mkdir -p www
-    sudo docker run -d --name $1 -p 80:80 -v "$PWD":/var/www php:7.2-apache
+    sudo docker run -d --name $1 -p $2:80 -v "$PWD":/var/www/html php:7.2-apache
   fi
 }
 dockerphp72apache80www(){
