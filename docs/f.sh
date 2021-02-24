@@ -354,7 +354,10 @@ ssh-github(){
 ssh-bitbucket(){
   ssh -T git@bitbucket.org
 }
-hideandseek(){
+gitcommitcount(){
+git log --oneline | wc -l
+}
+githideandseek(){
 echo -n "Are you sure? [y]: "
 read ans
 case $ans in
@@ -1032,7 +1035,7 @@ directory_size(){
 LOADED+=('f')
 f(){
   hr
-  echo VERSION:2021-02-24 17:02:10.526547018
+  echo VERSION:2021-02-25 01:55:21.866836665
   hr
 }
 #!/bin/bash

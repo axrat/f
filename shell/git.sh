@@ -12,7 +12,10 @@ ssh-github(){
 ssh-bitbucket(){
   ssh -T git@bitbucket.org
 }
-hideandseek(){
+gitcommitcount(){
+git log --oneline | wc -l
+}
+githideandseek(){
 echo -n "Are you sure? [y]: "
 read ans
 case $ans in
