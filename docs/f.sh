@@ -1032,7 +1032,7 @@ directory_size(){
 LOADED+=('f')
 f(){
   hr
-  echo VERSION:2021-02-24 17:01:29.731536679
+  echo VERSION:2021-02-24 17:02:10.526547018
   hr
 }
 #!/bin/bash
