@@ -1032,7 +1032,7 @@ directory_size(){
 LOADED+=('f')
 f(){
   hr
-  echo VERSION:2020-09-30 08:02:25.367098368
+  echo VERSION:2021-02-24 17:01:29.731536679
   hr
 }
 #!/bin/bash
@@ -1611,11 +1611,14 @@ EOF
 skelmakefile(){
 cat > Makefile << 'EOF'
 #!/usr/bin/make -f
+SHELL=/bin/bash
+##
 define README
 # README
 endef
 export README
 RUN := /bin/bash
+
 all:
 	@echo make readme
 readme:
