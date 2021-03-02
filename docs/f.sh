@@ -29,6 +29,18 @@ gitconfig(){
   fi
 }
 #!/bin/bash
+gitinitialize(){
+  if [ $# -ne 3 ]; then
+    echo "Require [host],[user],[repo]"
+  else
+    rm -rf .git
+    git init
+    git remote add origin git@$1:$2/$3.git
+    git fetch origin -f
+    git reset --hard origin/master
+  fi
+}
+#!/bin/bash
 sshpermission(){
   sudo find ~/.ssh/ -type d -exec sudo chmod 755 {} +
   sudo find ~/.ssh/ -type f -exec sudo chmod 600 {} +
@@ -59,6 +71,7 @@ alias ps="ps --sort=start_time"
 alias v="vim"
 alias e="emacs -nw"
 alias s='git status'
+alias d='git diff'
 alias sall='git status --untracked-files=all'
 ks(){
   echo "Oops!"
@@ -1035,7 +1048,7 @@ directory_size(){
 LOADED+=('f')
 f(){
   hr
-  echo VERSION:2021-03-02 14:17:34.521229401
+  echo VERSION:2021-03-02 16:51:29.529575947
   hr
 }
 #!/bin/bash

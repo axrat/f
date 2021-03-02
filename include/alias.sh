@@ -7,6 +7,7 @@ alias ps="ps --sort=start_time"
 alias v="vim"
 alias e="emacs -nw"
 alias s='git status'
+alias d='git diff'
 alias sall='git status --untracked-files=all'
 ks(){
   echo "Oops!"
