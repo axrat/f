@@ -13,7 +13,7 @@ RUN := /bin/bash
 all:
 	@echo make readme
 readme:
-	@echo "$$README"
+	-@echo "$$README"
 version:
 	$(RUN) \
 	--version
