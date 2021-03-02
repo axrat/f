@@ -20,6 +20,11 @@ if "${DRYRUN}"; then echo "DRYRUN"; fi
 #sudo bash -c "cat << 'EOF' > ok
 #$DATEID
 #EOF"
+#if [ ! -f "/.dockerenv" ] ; then
+#  echo "skip docker process"
+#else
+#  echo "try docker process"
+#fi
 echo "complete"
 
 EOF
