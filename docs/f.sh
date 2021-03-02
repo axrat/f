@@ -1035,7 +1035,7 @@ directory_size(){
 LOADED+=('f')
 f(){
   hr
-  echo VERSION:2021-03-02 14:14:46.248151472
+  echo VERSION:2021-03-02 14:17:34.521229401
   hr
 }
 #!/bin/bash
@@ -1659,9 +1659,7 @@ if "${DRYRUN}"; then echo "DRYRUN"; fi
 #sudo bash -c "cat << 'EOF' > ok
 #$DATEID
 #EOF"
-#if [ ! -f "/.dockerenv" ] ; then
-#  echo "skip docker process"
-#else
+#if [ -f "/.dockerenv" ] ; then
 #  echo "try docker process"
 #fi
 echo "complete"
