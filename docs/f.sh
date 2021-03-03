@@ -1051,7 +1051,7 @@ directory_size(){
 LOADED+=('f')
 f(){
   hr
-  echo VERSION:2021-03-03 23:04:56.518356196
+  echo VERSION:2021-03-04 00:00:35.473033483
   hr
 }
 #!/bin/bash
@@ -1669,7 +1669,7 @@ DATEID=$(date +%Y%m%d%H%M%S)
 readonly DRYRUN=false
 if "${DRYRUN}"; then echo "DRYRUN"; fi
 #if [[ -d "${DIR}" ]] ; then echo "found dirctory"; fi
-#ARR=('a' 'b' 'c'); for i in "${!ARR[@]}"; do printf '${ARR[%s]}=%s\n' "$i" "${ARR[i]}"; done
+#ARR=('docker' 'vagrant');for i in "${!ARR[@]}";do ITEM="${ARR[i]}";if ! type "$ITEM" > /dev/null 2>&1;then echo "not found $ITEM";fi;done
 #is_ok() { return 0; }
 #is_ok "ARGS" && echo "OK" || echo "NG" && exit 1
 #sudo bash -c "cat << 'EOF' > ok
