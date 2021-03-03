@@ -368,7 +368,10 @@ ssh-bitbucket(){
   ssh -T git@bitbucket.org
 }
 gitcommitcount(){
-git log --oneline | wc -l
+  git log --oneline | wc -l
+}
+gitrowcount(){
+  git ls-files | xargs -n1 git --no-pager blame -w | wc -l
 }
 githideandseek(){
 echo -n "Are you sure? [y]: "
@@ -1048,7 +1051,7 @@ directory_size(){
 LOADED+=('f')
 f(){
   hr
-  echo VERSION:2021-03-02 17:19:10.617087121
+  echo VERSION:2021-03-03 23:04:56.518356196
   hr
 }
 #!/bin/bash

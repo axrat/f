@@ -13,7 +13,10 @@ ssh-bitbucket(){
   ssh -T git@bitbucket.org
 }
 gitcommitcount(){
-git log --oneline | wc -l
+  git log --oneline | wc -l
+}
+gitrowcount(){
+  git ls-files | xargs -n1 git --no-pager blame -w | wc -l
 }
 githideandseek(){
 echo -n "Are you sure? [y]: "
