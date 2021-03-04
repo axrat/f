@@ -1051,7 +1051,7 @@ directory_size(){
 LOADED+=('f')
 f(){
   hr
-  echo VERSION:2021-03-04 00:00:35.473033483
+  echo VERSION:2021-03-04 22:16:35.541707594
   hr
 }
 #!/bin/bash
@@ -1801,6 +1801,14 @@ fi
 skelphp(){
 cat > info.php << 'EOF'
 <?php phpinfo();
+
+EOF
+}
+skelref(){
+cat > info.php << 'EOF'
+<?php
+class View extends Views{}
+
 EOF
 }
 #!/bin/bash
