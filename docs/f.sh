@@ -841,8 +841,7 @@ checkdirectorysize(){
   if [ $# -ne 1 ]; then
     echo "Require [DirectoryPath]"
   else
-    printf $(find $1 -type f -printf "%s\n" | awk '{ sum += $1; } END { print sum; }')
-    printf "byte\n"
+    du -sh $1
   fi
 }
 phpconfigurecheck(){
@@ -1051,7 +1050,7 @@ directory_size(){
 LOADED+=('f')
 f(){
   hr
-  echo VERSION:2021-03-04 22:16:35.541707594
+  echo VERSION:2021-03-11 18:55:47.988806049
   hr
 }
 #!/bin/bash
