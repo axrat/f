@@ -27,8 +27,8 @@ dockerphp72apache80html(){
 }
 dockerphp72apache80www(){
   mkdir -p www
-  sudo docker run -d -p 80:80 -v "$PWD/www":/var/www php:7.2-apache
+  sudo docker run -d --name php72apache -p 80:80 -v "$PWD/www":/var/www php:7.2-apache
 }
-dockercentossystemd80(){
-  sudo docker run -d --privileged -p 80:80 -v "$PWD":/var/www centos/systemd
+dockercentos7systemd80(){
+  sudo docker run -d --name centos7systemd --privileged -p 80:80 -v "$PWD":/var/www centos/systemd
 }
