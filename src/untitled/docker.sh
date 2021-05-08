@@ -29,3 +29,6 @@ dockerphp72apache80www(){
   mkdir -p www
   sudo docker run -d -p 80:80 -v "$PWD/www":/var/www php:7.2-apache
 }
+dockercentossystemd80(){
+  sudo docker run -d -p 80:80 -v "$PWD":/var/www centos/systemd
+}

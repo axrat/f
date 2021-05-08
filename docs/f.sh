@@ -1050,7 +1050,7 @@ directory_size(){
 LOADED+=('f')
 f(){
   hr
-  echo VERSION:2021-03-11 18:55:47.988806049
+  echo VERSION:2021-05-09 05:27:39.752509600
   hr
 }
 #!/bin/bash
@@ -1878,4 +1878,7 @@ dockerphp72apache80html(){
 dockerphp72apache80www(){
   mkdir -p www
   sudo docker run -d -p 80:80 -v "$PWD/www":/var/www php:7.2-apache
+}
+dockercentossystemd80(){
+  sudo docker run -d -p 80:80 -v "$PWD":/var/www centos/systemd
 }
