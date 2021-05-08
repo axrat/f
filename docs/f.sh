@@ -354,6 +354,22 @@ fless(){
 
 
 #!/bin/bash
+fixadd(){
+  if [ $# -ne 2 ]; then
+    echo "require [FILE],\"[LINE]\"" 1>&2
+  else
+    FILE=$1
+    LINE=$2
+    grep -qF -- "$LINE" "$FILE" || echo "$LINE" >> "$FILE"
+  fi
+}
+disablealert(){
+  touch ~/.inputrc
+  fixadd ~/.inputrc "set bell-style none"
+  touch ~/.vimrc
+	fixadd ~/.vimrc "set visualbell t_vb="
+}
+#!/bin/bash
 gitremoteadd(){
   if [ $# -ne 3 ]; then
     echo "require [host],[repo_user],[repo_name]" 1>&2
@@ -965,15 +981,6 @@ requiresudo(){
     exit
   fi
 }
-fixadd(){
-  if [ $# -ne 2 ]; then
-    echo "require [FILE],\"[LINE]\"" 1>&2
-  else
-    FILE=$1
-    LINE=$2
-    grep -qF -- "$LINE" "$FILE" || echo "$LINE" >> "$FILE"
-  fi
-}
 tmuxexit(){
   tmux kill-server
 }
@@ -1050,7 +1057,7 @@ directory_size(){
 LOADED+=('f')
 f(){
   hr
-  echo VERSION:2021-03-11 18:55:47.988806049
+  echo VERSION:2021-05-09 06:38:38.916512501
   hr
 }
 #!/bin/bash
