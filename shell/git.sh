@@ -19,61 +19,59 @@ gitrowcount(){
   git ls-files | xargs -n1 git --no-pager blame -w | wc -l
 }
 githideandseek(){
-echo -n "Are you sure? [y]: "
-read ans
-case $ans in
+  echo -n "Are you sure? [y]: "
+  read ans
+  case $ans in
   '' | y* | Y* )
-
-git filter-branch -f --index-filter '
-git rm -rf --cached --ignore-unmatch * 
-' HEAD
-git filter-branch -f --index-filter '
-touch .hidden | git add .hidden 
-' HEAD
-git reflog expire --expire=now --all
-git gc --aggressive --prune=now
-
+    git filter-branch -f --index-filter '
+    git rm -rf --cached --ignore-unmatch * 
+    ' HEAD
+    git filter-branch -f --index-filter '
+    touch .hidden | git add .hidden 
+    ' HEAD
+    git reflog expire --expire=now --all
+    git gc --aggressive --prune=now
     ;;
   * )
     ;;
-esac
+  esac
 }
 gitoverride(){
-git checkout --orphan tmp
-git commit -m "override"
-git checkout -B master
-git branch -d tmp
-git push -f --set-upstream origin master
+  git checkout --orphan tmp
+  git commit -m "override"
+  git checkout -B master
+  git branch -d tmp
+  git push -f --set-upstream origin master
 }
 seturl(){
-git remote add     origin $1
-git remote set-url origin $1
+  git remote add     origin $1
+  git remote set-url origin $1
 }
 gitshallow(){
-git clone --depth 1 $1
+  git clone --depth 1 $1
 }
 gitunshallow(){
-git fetch --unshallow
+  git fetch --unshallow
 }
 gitchangecommiter(){
-USERNAME=onoie
-USEREMAIL=onoie3@gmail.com
-git filter-branch -f --env-filter "GIT_AUTHOR_NAME='${USERNAME}'; GIT_AUTHOR_EMAIL='${USEREMAIL}'; GIT_COMMITTER_NAME='${USERNAME}'; GIT_COMMITTER_EMAIL='${USEREMAIL}';" HEAD
+  USERNAME=onoie
+  USEREMAIL=onoie3@gmail.com
+  git filter-branch -f --env-filter "GIT_AUTHOR_NAME='${USERNAME}'; GIT_AUTHOR_EMAIL='${USEREMAIL}'; GIT_COMMITTER_NAME='${USERNAME}'; GIT_COMMITTER_EMAIL='${USEREMAIL}';" HEAD
 }
 gitrepositorymerge(){
 if [ $# -ne 1 ]; then
   echo "require local target repository path" 1>&2
   echo "Ex) [~/repos/repo]" 1>&2
-  exit 1
+else
+  REPO_URL=$1
+  SUBDIR=$(basename $REPO_URL)
+  git fetch $REPO_URL/.git refs/heads/master:refs/heads/$SUBDIR
+  git filter-branch -f --tree-filter '
+  [ -d ${SUBDIR} ] || mkdir -p ${SUBDIR};
+  find . -mindepth 1 -maxdepth 1 ! -path ./${SUBDIR} | xargs -i{} mv -f {} ${SUBDIR}
+  ' $SUBDIR
+  git merge --allow-unrelated-histories --no-ff $SUBDIR
 fi
-REPO_URL=$1
-SUBDIR=$(basename $REPO_URL)
-git fetch $REPO_URL/.git refs/heads/master:refs/heads/$SUBDIR
-git filter-branch -f --tree-filter '
-[ -d ${SUBDIR} ] || mkdir -p ${SUBDIR};
-find . -mindepth 1 -maxdepth 1 ! -path ./${SUBDIR} | xargs -i{} mv -f {} ${SUBDIR}
-' $SUBDIR
-git merge --allow-unrelated-histories --no-ff $SUBDIR
 }
 gitchangecommitmessage(){
   MSG=${@:-"### private commit message ###"}
@@ -116,23 +114,23 @@ gitrmremotebranch(){
   fi
 }
 getGithubPublicRepositoryViaAPI(){
-curl https://api.github.com/users/onoie/repos
+  curl https://api.github.com/users/onoie/repos
 }
 getGithubPrivateRepositoryViaAPI(){
-ACCESS_TOKEN=$1
-ORG=$2
-curl -u :${ACCESS_TOKEN} https://api.github.com/orgs/$ORG{}/repos
-curl -H 'Authorization: token ${ACCESS_TOKEN}' https://api.github.com/orgs/$ORG/repos
-curl 'https://api.github.com/orgs/${ORG}/repos?access_token=${ACCESS_TOKEN}'
+  ACCESS_TOKEN=$1
+  ORG=$2
+  curl -u :${ACCESS_TOKEN} https://api.github.com/orgs/$ORG{}/repos
+  curl -H 'Authorization: token ${ACCESS_TOKEN}' https://api.github.com/orgs/$ORG/repos
+  curl 'https://api.github.com/orgs/${ORG}/repos?access_token=${ACCESS_TOKEN}'
 }
 gitcreateremotebranch(){
   if [ $# -ne 1 ]; then
     echo "Require [branch]"
   else
     git branch $1
-	git checkout $1
-	git branch --all
-	git push origin master:$1
+    git checkout $1
+    git branch --all
+    git push origin master:$1
   fi
 }
 gitdeleteremotebranch(){
@@ -160,41 +158,14 @@ gitskiprevert(){
 gitskipcheck(){
   git ls-files -v | grep ^S
 }
-gitinitialize(){
-if [ $# -ne 3 ]; then
-  echo "require args : [repo_host],[repo_user],[repo_name] $#/3" 1>&2
-else
-  git init
-  git remote add origin git@$1:$2/$3.git
-  git pull origin master
-  git reset --hard origin/master
-fi
-}
 gitresethard(){
   git reset --hard origin/master
-}
-githubpullreset(){
-if ! type "git" > /dev/null 2>&1; then
-  echo "git command not found"
-else
-  if [ $# -ne 3 ]; then
-    echo "require args : [repo_user],[repo_name],[repo_directory] $#/3" 1>&2
-  fi
-  mkdir -p $3
-  cd $3
-  OLDPWD="$(cd -)"
-  git init
-  git remote add origin https://github.com/$1/$2.git
-  git pull origin master
-  git reset --hard origin/master
-  cd $OLDPWD
-fi
 }
 gitsubmoduleadd(){
   if [ $# -ne 3 ]; then
     echo "Require [RepoHost],[RepoUser],[RepoName]"
   else
-	git submodule add https://$1/$2/$3.git $3
+    git submodule add https://$1/$2/$3.git $3
   fi
 }
 gitsubmoduleinit(){
