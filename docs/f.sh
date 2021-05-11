@@ -1,24 +1,4 @@
 #!/bin/bash
-fast(){
-  if ! type "unzip" > /dev/null 2>&1
-  then
-    echo "[unzip] Command Not Found"
-  else
-    if [ $# -ne 2 ]; then
-      echo "Require Bitbucket [repouser],[reponame]"
-    else
-      USERNAME=$1
-      REPONAME=$2
-      wget --user=$USERNAME --ask-password https://bitbucket.org/$USERNAME/$REPONAME/get/master.zip -O master.zip
-      DIRNAME=$(unzip -qql master.zip | head -n1 | tr -s ' ' | cut -d' ' -f5- | rev | cut -c 2- | rev)
-      unzip master.zip
-      mv $DIRNAME $REPONAME
-      rm -f master.zip
-    fi
-  fi
-}
-
-#!/bin/bash
 gitconfig(){
   if [ $# -ne 2 ]; then
     echo "Require [name],[email]"
@@ -28,21 +8,22 @@ gitconfig(){
     git config --local push.default current
   fi
 }
-#!/bin/bash
-gitinitialize(){
+#!/bin/bas
+gitinit(){
   if [ $# -ne 6 ]; then
     echo "Require [host],[user],[repo],[branch],[name],[email]"
   else
     rm -rf .git
     git init
     git remote add origin git@$1:$2/$3.git
-    git fetch origin $4 -f
+    git fetch origin
     git reset --hard origin/$4
     git config --local user.name $5
     git config --local user.email $6
     git config --local push.default current
   fi
 }
+
 #!/bin/bash
 sshpermission(){
   sudo find ~/.ssh/ -type d -exec sudo chmod 755 {} +
@@ -51,16 +32,15 @@ sshpermission(){
 #!/bin/bash
 wgetbitbucket(){
   if [ $# -ne 3 ]; then
-    echo "Require bitbucket [username],[repouser],[reponame]"
+    echo "Require bitbucket [user],[repo],[repo]"
   else
-    #--password=password
     wget --user=$1 --ask-password https://bitbucket.org/$2/$3/get/master.zip -O master.zip
   fi
 }
 #!/bin/bash
 wgetgithub(){
   if [ $# -ne 2 ]; then
-    echo "Require bitbucket [repouser],[reponame]"
+    echo "Require bitbucket [user],[repo]"
   else
     wget --no-check-certificate https://github.com/$1/$2/archive/master.zip -O master.zip
   fi
@@ -380,10 +360,10 @@ gitremoteadd(){
     git remote add origin https://$1/$2/$3.git
   fi
 }
-ssh-github(){
+sshtestgithub(){
   ssh -T git@github.com
 }
-ssh-bitbucket(){
+sshtestbitbucket(){
   ssh -T git@bitbucket.org
 }
 gitcommitcount(){
@@ -453,17 +433,6 @@ gitchangecommitmessage(){
 }
 creategithubgrasssvg(){
 curl https://github.com/$1 | awk '/<svg.+class="js-calendar-graph-svg"/,/svg>/' | sed -e 's/<svg/<svg xmlns="http:\/\/www.w3.org\/2000\/svg"/' > $1.svg
-}
-clone(){
-  if [ $# -ne 5 ]; then
-    echo "Require [RepositoryHost]:[Username]/[RepositoryName].git"
-    echo "git local [GitUsername] [GitEmail]"
-  else
-    git clone git@$1:$2/$3.git
-    cd $3
-    git config --local user.name "$4"
-    git config --local user.email "$5"
-  fi
 }
 getLastCommitMessage(){
   if [ $# -ne 3 ]; then
@@ -1031,7 +1000,7 @@ directory_size(){
 LOADED+=('f')
 f(){
   hr
-  echo VERSION:2021-05-11 19:31:21.200138100
+  echo VERSION:2021-05-12 01:27:18.826539000
   hr
 }
 #!/bin/bash

@@ -6,10 +6,10 @@ gitremoteadd(){
     git remote add origin https://$1/$2/$3.git
   fi
 }
-ssh-github(){
+sshtestgithub(){
   ssh -T git@github.com
 }
-ssh-bitbucket(){
+sshtestbitbucket(){
   ssh -T git@bitbucket.org
 }
 gitcommitcount(){
@@ -79,17 +79,6 @@ gitchangecommitmessage(){
 }
 creategithubgrasssvg(){
 curl https://github.com/$1 | awk '/<svg.+class="js-calendar-graph-svg"/,/svg>/' | sed -e 's/<svg/<svg xmlns="http:\/\/www.w3.org\/2000\/svg"/' > $1.svg
-}
-clone(){
-  if [ $# -ne 5 ]; then
-    echo "Require [RepositoryHost]:[Username]/[RepositoryName].git"
-    echo "git local [GitUsername] [GitEmail]"
-  else
-    git clone git@$1:$2/$3.git
-    cd $3
-    git config --local user.name "$4"
-    git config --local user.email "$5"
-  fi
 }
 getLastCommitMessage(){
   if [ $# -ne 3 ]; then
