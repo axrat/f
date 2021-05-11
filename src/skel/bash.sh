@@ -6,7 +6,8 @@ cat << 'EOF' > $OUTPUT
 #!/bin/bash
 DATEID=$(date +%Y%m%d%H%M%S)
 BASE=$(cd $(dirname $0); pwd)
-[ -e $BASE/.sh ] && source $BASE/.sh
+[ -e $BASE/_.sh ] && source $BASE/_.sh
+cd $BASE
 #if [ $# -ne 1 ]; then
 #  echo "require args:$#/1"
 #else

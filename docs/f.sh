@@ -1020,7 +1020,7 @@ directory_size(){
 LOADED+=('f')
 f(){
   hr
-  echo VERSION:2021-05-12 08:02:50.965135200
+  echo VERSION:2021-05-12 08:11:53.889354100
   hr
 }
 #!/bin/bash
@@ -1630,7 +1630,8 @@ cat << 'EOF' > $OUTPUT
 #!/bin/bash
 DATEID=$(date +%Y%m%d%H%M%S)
 BASE=$(cd $(dirname $0); pwd)
-[ -e $BASE/.sh ] && source $BASE/.sh
+[ -e $BASE/_.sh ] && source $BASE/_.sh
+cd $BASE
 #if [ $# -ne 1 ]; then
 #  echo "require args:$#/1"
 #else
