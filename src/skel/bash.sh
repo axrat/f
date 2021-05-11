@@ -4,15 +4,16 @@ OUTPUT=skel.sh
 if [ ! -f "$OUTPUT" ]; then
 cat << 'EOF' > $OUTPUT
 #!/bin/bash
-BASE=$(cd $(dirname $0); pwd)
 DATEID=$(date +%Y%m%d%H%M%S)
+BASE=$(cd $(dirname $0); pwd)
+[ -e $BASE/.sh ] && source $BASE/.sh
 #if [ $# -ne 1 ]; then
 #  echo "require args:$#/1"
 #else
 #  echo "$1"
 #fi
-readonly DRYRUN=false
-if "${DRYRUN}"; then echo "DRYRUN"; fi
+#readonly DRYRUN=false
+#if "${DRYRUN}"; then echo "DRYRUN"; fi
 #if [[ -d "${DIR}" ]] ; then echo "found dirctory"; fi
 #ARR=('docker' 'vagrant');for i in "${!ARR[@]}";do ITEM="${ARR[i]}";if ! type "$ITEM" > /dev/null 2>&1;then echo "not found $ITEM";fi;done
 #is_ok() { return 0; }
