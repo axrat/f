@@ -4,6 +4,26 @@ alignright(){ printf "%${COLUMNS}s\n" $1; }
 aligncenter(){ printf "%*s\n" $(((${#title}+$COLUMNS)/2)) "$1"; }
 aligns(){ printf "$1%*.*s$2\n" 0 $(( $COLUMNS - ${#1} - ${#2} )) "$(hr)"; }
 keyval(){ printf "$1%*.*s$2\n" 0 $(( $COLUMNS / 2  - ${#1} )) "$(hr)"; }
+ask(){
+  while true; do
+    echo -n "$* (y/n): "; read ANS; case $ANS in
+      [Yy]*) return 0;;
+      [Nn]*) return 1;;
+      *) echo "Please (y/n)";;
+    esac
+  done
+}
+symbolic(){
+  TARGET=$1
+  DIR=$2
+  cd $TARGET
+  if [ -d $DIR ]; then
+    echo "found $DIR"
+  else
+    echo "not found $DIR"
+    sudo ln -s $TARGET $DIR
+  fi
+}
 chmodparentdir(){
 sudo chmod 777 $(cd $(dirname $0); pwd) -f
 }

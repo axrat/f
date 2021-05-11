@@ -31,10 +31,10 @@ sshpermission(){
 }
 #!/bin/bash
 wgetbitbucket(){
-  if [ $# -ne 3 ]; then
-    echo "Require bitbucket [user],[repo],[repo]"
+  if [ $# -ne 2 ]; then
+    echo "Require bitbucket [user],[repo]"
   else
-    wget --user=$1 --ask-password https://bitbucket.org/$2/$3/get/master.zip -O master.zip
+    wget --user=$1 --ask-password https://bitbucket.org/$1/$2/get/master.zip -O master.zip
   fi
 }
 #!/bin/bash
@@ -551,6 +551,26 @@ alignright(){ printf "%${COLUMNS}s\n" $1; }
 aligncenter(){ printf "%*s\n" $(((${#title}+$COLUMNS)/2)) "$1"; }
 aligns(){ printf "$1%*.*s$2\n" 0 $(( $COLUMNS - ${#1} - ${#2} )) "$(hr)"; }
 keyval(){ printf "$1%*.*s$2\n" 0 $(( $COLUMNS / 2  - ${#1} )) "$(hr)"; }
+ask(){
+  while true; do
+    echo -n "$* (y/n): "; read ANS; case $ANS in
+      [Yy]*) return 0;;
+      [Nn]*) return 1;;
+      *) echo "Please (y/n)";;
+    esac
+  done
+}
+symbolic(){
+  TARGET=$1
+  DIR=$2
+  cd $TARGET
+  if [ -d $DIR ]; then
+    echo "found $DIR"
+  else
+    echo "not found $DIR"
+    sudo ln -s $TARGET $DIR
+  fi
+}
 chmodparentdir(){
 sudo chmod 777 $(cd $(dirname $0); pwd) -f
 }
@@ -1000,7 +1020,7 @@ directory_size(){
 LOADED+=('f')
 f(){
   hr
-  echo VERSION:2021-05-12 01:27:18.826539000
+  echo VERSION:2021-05-12 07:05:14.495332900
   hr
 }
 #!/bin/bash
@@ -1620,7 +1640,8 @@ if "${DRYRUN}"; then echo "DRYRUN"; fi
 #if [[ -d "${DIR}" ]] ; then echo "found dirctory"; fi
 #ARR=('docker' 'vagrant');for i in "${!ARR[@]}";do ITEM="${ARR[i]}";if ! type "$ITEM" > /dev/null 2>&1;then echo "not found $ITEM";fi;done
 #is_ok() { return 0; }
-#is_ok "ARGS" && echo "OK" || echo "NG" && exit 1
+#OK=$(is_ok "ARGS" && echo true || echo false)
+#if "${OK}"; then echo "ok"; else echo "ng"; fi
 #sudo bash -c "cat << 'EOF' > ok
 #$DATEID
 #EOF"
