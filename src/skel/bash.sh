@@ -9,8 +9,7 @@ BASE=$(cd $(dirname $0); pwd)
 [ -e $BASE/_.sh ] && source $BASE/_.sh
 cd $BASE
 #if ask "FLG ?";then FLG=true;else FLG=false;fi
-#OK=$(ask "ok?" && echo true || echo false)
-#if "${OK}"; then echo "ok"; else echo "ng"; fi
+#if $FLG; then echo "ok"; else echo "ng"; fi
 #if [ $# -ne 1 ]; then
 #  echo "require args:$#/1"
 #else
