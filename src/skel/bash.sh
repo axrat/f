@@ -8,6 +8,9 @@ DATEID=$(date +%Y%m%d%H%M%S)
 BASE=$(cd $(dirname $0); pwd)
 [ -e $BASE/_.sh ] && source $BASE/_.sh
 cd $BASE
+#if ask "FLG ?";then FLG=true;else FLG=false;fi
+#OK=$(ask "ok?" && echo true || echo false)
+#if "${OK}"; then echo "ok"; else echo "ng"; fi
 #if [ $# -ne 1 ]; then
 #  echo "require args:$#/1"
 #else
@@ -17,9 +20,6 @@ cd $BASE
 #if "${DRYRUN}"; then echo "DRYRUN"; fi
 #if [[ -d "${DIR}" ]] ; then echo "found dirctory"; fi
 #ARR=('docker' 'vagrant');for i in "${!ARR[@]}";do ITEM="${ARR[i]}";if ! type "$ITEM" > /dev/null 2>&1;then echo "not found $ITEM";fi;done
-#is_ok() { return 0; }
-#OK=$(is_ok "ARGS" && echo true || echo false)
-#if "${OK}"; then echo "ok"; else echo "ng"; fi
 #sudo bash -c "cat << 'EOF' > ok
 #$DATEID
 #EOF"
