@@ -30,6 +30,16 @@ sshpermission(){
   sudo find ~/.ssh/ -type f -exec sudo chmod 600 {} +
 }
 #!/bin/bash
+sshtestbitbucket(){
+  echo "SSH TEST BITBUCKET"
+  ssh -o "StrictHostKeyChecking=no" -T git@bitbucket.org
+}
+#!/bin/bash
+sshtestgithub(){
+  echo "SSH TEST GITHUB"
+  ssh -o "StrictHostKeyChecking=no" -T git@github.com
+}
+#!/bin/bash
 wgetbitbucket(){
   if [ $# -ne 2 ]; then
     echo "Require bitbucket [user],[repo]"
@@ -1020,7 +1030,7 @@ directory_size(){
 LOADED+=('f')
 f(){
   hr
-  echo VERSION:2021-05-12 10:33:48.707658100
+  echo VERSION:2021-05-13 06:14:53.650282200
   hr
 }
 #!/bin/bash
