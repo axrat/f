@@ -62,7 +62,6 @@ fpush(){
   git push --set-upstream origin master
 }
 fpull(){
-  git pull --tags
   git pull origin master --depth=1
 }
 ffetch(){

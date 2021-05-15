@@ -308,7 +308,6 @@ fpush(){
   git push --set-upstream origin master
 }
 fpull(){
-  git pull --tags
   git pull origin master --depth=1
 }
 ffetch(){
@@ -1030,7 +1029,7 @@ directory_size(){
 LOADED+=('f')
 f(){
   hr
-  echo VERSION:2021-05-13 06:14:53.650282200
+  echo VERSION:2021-05-15 09:37:06.558002825
   hr
 }
 #!/bin/bash
