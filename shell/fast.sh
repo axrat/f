@@ -62,7 +62,7 @@ fpush(){
   git push --set-upstream origin master
 }
 fpull(){
-  git pull origin master --depth=1
+  git pull origin master
 }
 ffetch(){
   git fetch origin
