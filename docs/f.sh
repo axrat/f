@@ -1029,7 +1029,7 @@ directory_size(){
 LOADED+=('f')
 f(){
   hr
-  echo VERSION:2021-05-21 14:39:04.879844154
+  echo VERSION:2021-05-27 10:15:15.100053729
   hr
 }
 #!/bin/bash
@@ -1848,6 +1848,9 @@ sudo cgroupfs-mount
 #sudo usermod -aG docker $USER
 #restart terminal for admin privilege
 sudo service docker start
+}
+dockernginx(){
+  sudo docker run --name nginx -d -p 80:80 -v /var/run/docker.sock:/tmp/docker.sock:ro nginxproxy/nginx-proxy
 }
 dockerphp72apache80html(){
   if [ $# -ne 2 ]; then
