@@ -19,7 +19,7 @@ sudo cgroupfs-mount
 sudo service docker start
 }
 dockernginx(){
-  sudo docker run --name nginx -d -p 80:80 -v /var/run/docker.sock:/tmp/docker.sock:ro nginxproxy/nginx-proxy
+  sudo docker run --name nginx -d -p 80:80 -p 443:443 -v /var/run/docker.sock:/tmp/docker.sock:ro nginxproxy/nginx-proxy
 }
 dockerphp72apache80html(){
   if [ $# -ne 2 ]; then
