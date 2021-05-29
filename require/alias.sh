@@ -4,6 +4,7 @@ alias la='ls -A'
 alias l='ls -cf'
 alias watch='watch -d=permanent -n 5'
 alias ps="ps --sort=start_time"
+alias dps="sudo docker ps -a"
 alias v="vim"
 alias e="emacs -nw"
 alias s='git status'
