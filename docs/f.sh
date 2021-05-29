@@ -577,273 +577,6 @@ cd src && sudo make install
 echo "complete"
 }
 #!/bin/bash
-skeldockermakefile(){
-cat > Makefile << 'EOF'
-AUTHOR := skel
-IMAGE := skel
-TAG := latest
-PORT := 65535
-all:
-	@echo make dockerfile,dockerbuild,build,rm,frm,enable,disable,ps,run,stop,bash
-dockerfile:
-	@rm -f Dockerfile
-	@echo 'FROM centos/systemd'>>Dockerfile
-	@echo 'RUN yum -y update; yum clean all;'>>Dockerfile
-	@echo 'RUN yum -y install curl libcurl-devel openssl-devel wget nano vim git zip expect bc mariadb httpd httpd-devel mod_ssl; yum clean all; systemctl enable httpd.service'>>Dockerfile
-	@echo 'RUN yum -y install http://rpms.famillecollet.com/enterprise/remi-release-7.rpm'>>Dockerfile
-	@echo 'RUN yum -y install --enablerepo=remi,remi-php72 php php-mbstring php-pdo php-gd php-pecl-redis php-mysql php-pecl-mcrypt'>>Dockerfile
-	@echo 'RUN echo "<VirtualHost *:80>">>/etc/httpd/conf.d/vhost.00-default.conf'>>Dockerfile
-	@echo 'RUN echo "  ServerName __default__">>/etc/httpd/conf.d/vhost.00-default.conf'>>Dockerfile
-	@echo 'RUN echo "  DocumentRoot /var/www/html">>/etc/httpd/conf.d/vhost.00-default.conf'>>Dockerfile
-	@echo 'RUN echo "  DirectoryIndex index.php index.html index.htm">>/etc/httpd/conf.d/vhost.00-default.conf'>>Dockerfile
-	@echo 'RUN echo "  <Directory /var/www/html>">>/etc/httpd/conf.d/vhost.00-default.conf'>>Dockerfile
-	@echo 'RUN echo "    Options Indexes FollowSymLinks">>/etc/httpd/conf.d/vhost.00-default.conf'>>Dockerfile
-	@echo 'RUN echo "    AllowOverride All">>/etc/httpd/conf.d/vhost.00-default.conf'>>Dockerfile
-	@echo 'RUN echo "  </Directory>">>/etc/httpd/conf.d/vhost.00-default.conf'>>Dockerfile
-	@echo 'RUN echo "</VirtualHost>">>/etc/httpd/conf.d/vhost.00-default.conf'>>Dockerfile
-	@echo 'ENV TZ=Asia/Tokyo'>>Dockerfile
-	@echo 'RUN echo "ZONE=Asia/Tokyo" > /etc/sysconfig/clock '>>Dockerfile
-	@echo 'RUN rm -f /etc/localtime'>>Dockerfile
-	@echo 'RUN ln -fs /usr/share/zoneinfo/Asia/Tokyo /etc/localtime'>>Dockerfile
-	@echo 'RUN yum -y install cronie'>>Dockerfile
-	@echo 'RUN echo "* * * * * /var/www/cron/cron.sh">>/var/spool/cron/root'>>Dockerfile
-	@echo 'RUN yum -y install --enablerepo=remi jq nkf'>>Dockerfile
-	@echo 'COPY override/ /'>>Dockerfile
-	@echo 'CMD ["/usr/sbin/init"]'>>Dockerfile
-dockerbuild:
-	@mkdir -p override
-	sudo docker build -t $(AUTHOR)/$(IMAGE):$(TAG) .
-	@rmdir override --ignore-fail-on-non-empty
-fdockerbuild:
-	@mkdir -p override
-	sudo docker build --rm -t $(AUTHOR)/$(IMAGE):$(TAG) .
-	@rmdir override --ignore-fail-on-non-empty
-build: dockerfile fdockerbuild
-	@rm -f Dockerfile
-rm:
-	sudo docker rm $(IMAGE)
-frm:
-	sudo docker rm --force $(IMAGE)
-enable:
-	sudo docker update --restart=always $(IMAGE)
-disable:
-	sudo docker update --restart=no $(IMAGE)
-ps:
-	sudo docker ps -a -f name=$(IMAGE)
-run:
-	sudo docker run -d \
-	--privileged \
-	--name $(IMAGE) \
-	--hostname $(IMAGE) \
-	-p $(PORT):80 \
-	-v "$(PWD)/www":/var/www \
-	$(AUTHOR)/$(IMAGE):$(TAG)
-stop:
-	sudo docker stop $(IMAGE)
-bash:
-	sudo docker exec -it $(IMAGE) /bin/bash
-EOF
-}
-#!/bin/bash
-skelmakefile(){
-cat > Makefile << 'EOF'
-#!/usr/bin/make -f
-SHELL=/bin/bash
-##
-define README
-# README
-endef
-export README
-RUN := /bin/bash
-
-all:
-	@echo make readme
-readme:
-	-@echo "$$README"
-version:
-	$(RUN) \
-	--version
-EOF
-}
-#!/bin/bash
-skelversion(){
-bash -c "cat << 'EOF' > VERSION
-1.0.0
-EOF"
-}
-#!/bin/bash
-skelbash(){
-OUTPUT=skel.sh
-if [ ! -f "$OUTPUT" ]; then
-cat << 'EOF' > $OUTPUT
-#!/bin/bash
-DATEID=$(date +%Y%m%d%H%M%S)
-BASE=$(cd $(dirname $0); pwd)
-[ -e $BASE/_.sh ] && source $BASE/_.sh
-cd $BASE
-#if ask "FLG ?";then FLG=true;else FLG=false;fi
-#if $FLG; then echo "ok"; else echo "ng"; fi
-#if [ $# -ne 1 ]; then
-#  echo "require args:$#/1"
-#else
-#  echo "$1"
-#fi
-#readonly DRYRUN=false
-#if "${DRYRUN}"; then echo "DRYRUN"; fi
-#if [[ -d "${DIR}" ]] ; then echo "found dirctory"; fi
-#ARR=('docker' 'vagrant');for i in "${!ARR[@]}";do ITEM="${ARR[i]}";if ! type "$ITEM" > /dev/null 2>&1;then echo "not found $ITEM";fi;done
-#sudo bash -c "cat << 'EOF' > ok
-#$DATEID
-#EOF"
-#if [ -f "/.dockerenv" ] ; then
-#  echo "try docker process"
-#fi
-echo "complete"
-
-EOF
-chmod +x $OUTPUT
-fi
-}
-
-#!/bin/bash
-skelcmake(){
-OUTPUT=CMakeLists.txt
-if [ ! -f "$OUTPUT" ]; then
-cat << 'EOF' > $OUTPUT
-cmake_minimum_required(VERSION 2.8.12.2)
-project(skel CXX)
-add_executable(skelton main.cpp)
-
-EOF
-fi
-}
-
-#!/bin/bash
-skelcpp(){
-OUTPUT=skel.cpp
-if [ ! -f "$OUTPUT" ]; then
-cat << 'EOF' > $OUTPUT
-#include <iostream>
-int main() {
-  std::cout << "HelloWorld" << std::endl;
-  return 0;
-}
-EOF
-fi
-}
-
-#!/bin/bash
-skelcsharp(){
-OUTPUT=skel.cs
-if [ ! -f "$OUTPUT" ]; then
-cat << 'EOF' > $OUTPUT
-using System;
-public class HelloWorld {
-    public static void Main(string[] args){
-        Console.WriteLine ("HelloWorld");
-    }
-}
-EOF
-fi
-}
-
-#!/bin/bash
-skelgo(){
-cat > main.go << 'EOF'
-package main
-//import (
-//	_ "github.com/mattn/go-sqlite3"
-//)
-import (
-	"fmt"
-	"os"
-	"path/filepath"
-)
-func main() {
-	//fmt.Println("HelloWorld")
-	pwd, _ := os.Getwd()
-	fmt.Println("PWD:"+pwd)
-	exe_path, _ := os.Executable()
-	fmt.Println("EXE_PATH:"+exe_path)
-	exe_dir := filepath.Dir(exe_path)
-	fmt.Println("EXE_DIR:"+exe_dir)
-	file, _ := os.Create(exe_dir+"/ok.txt")
-	defer file.Close()
-	file.Write(([]byte)("Hello,World!"))
-}
-
-EOF
-}
-#!/bin/bash
-skelhtml(){
-cat > index.html << 'EOF'
-<html>
-<head></head>
-<body><center>HelloWorld</center>
-</body>
-</html>
-EOF
-}
-#!/bin/bash
-skeljson(){
-OUTPUT=skel.json
-if [ ! -f "$OUTPUT" ]; then
-cat << 'EOF' > $OUTPUT
-{
-  "root":{
-    "id":"1",
-    "list":["a","b","c"],
-    "object":{"key":"val"},
-    "array":[
-      {"name":"name1"},
-      {"name":"name2"}
-    ]
-  }
-}
-EOF
-fi
-}
-#!/bin/bash
-skelperl(){
-OUTPUT=skel.pl
-if [ ! -f "$OUTPUT" ]; then
-cat << 'EOF' > $OUTPUT
-#!/usr/bin/perl
-print "Content-type: text/html\n\n";
-print "HelloWorld\n";
-
-EOF
-chmod 755 $OUTPUT
-fi
-}
-
-#!/bin/bash
-skelphp(){
-cat > info.php << 'EOF'
-<?php phpinfo();
-
-EOF
-}
-skelref(){
-cat > info.php << 'EOF'
-<?php
-class View extends Views{}
-
-EOF
-}
-#!/bin/bash
-skelpython(){
-OUTPUT=main.py
-if [ ! -f "$OUTPUT" ]; then
-bash -c "cat << 'EOF' > $OUTPUT
-#!/usr/bin/env python3
-# coding:utf-8
-
-EOF"
-chmod +x $OUTPUT
-fi
-}
-#!/bin/bash
 ubuntuinstallntp(){
   sudo apt-get install ntp
   sudo /etc/init.d/ntp start
@@ -855,59 +588,9 @@ installubuntuoraclejdk(){
   sudo apt-get install oracle-java8-installer
 }
 #!/bin/bash
-citravis(){
-if ! type "travis" > /dev/null 2>&1 ; then
-  echo "Command Not Found:travis"
-  return 0;
-fi
-if [ $# -ne 2 ]; then
-  echo "Require [Username],[Reponame]"
-else
-  echo "travis encrypt -r $1/$2 \"<github_token>\""
-  read -sp "GithubToken:" TOKEN
-  #echo "<<$TOKEN>>"
-  travis encrypt -r $1/$2 "$TOKEN"
-fi
-}
-#!/bin/bash
-dockerexec(){
-sudo docker exec -it $1 /bin/bash
-}
-dockerrminone(){
-sudo docker images | awk '/<none/{print $3}' | xargs sudo docker rmi
-}
-dockerstopall(){
-sudo docker stop $(sudo docker ps -a -q)
-}
-dockerrmall(){
-sudo docker rm $(sudo docker ps -a -q)
-}
-dockerstartonwslforadmin(){
-#sudo apt-get install -y docker.io
-sudo cgroupfs-mount
-#sudo usermod -aG docker $USER
-#restart terminal for admin privilege
-sudo service docker start
-}
-dockernginx(){
-  sudo docker run --name nginx -d -p 80:80 -p 443:443 -v /var/run/docker.sock:/tmp/docker.sock:ro nginxproxy/nginx-proxy
-}
-dockerphp(){
-  if [ $# -ne 1 ]; then
-    echo "require port:$#/1"
-  else
-    IMAGE=php
-    TAG=7.2-apache
-    sudo docker run -d --name $IMAGE --hostname $IMAGE -p $1:80 -v "$PWD":/var/www $IMAGE:$TAG
-  fi
-}
-dockercentos7systemd80(){
-  sudo docker run -d --name centos7systemd --privileged -p 80:80 -v "$PWD":/var/www centos/systemd
-}
-#!/bin/bash
 f(){
   hr
-  echo VERSION:2021-05-29 22:05:59.309390000
+  echo VERSION:2021-05-29 22:21:29.339051546
   hr
 }
 #!/bin/bash
@@ -1862,4 +1545,283 @@ echo "plz relogin"
 }
 directory_size(){
   du --separate-dirs -h --total $(pwd)/*/
+}
+#!/bin/bash
+skeldockermakefile(){
+cat > Makefile << 'EOF'
+AUTHOR:=nginxproxy
+IMAGE:=nginx-proxy
+TAG:=latest
+OPTION:=-e ENABLE_IPV6=true -e HTTPS_METHOD=noredirect
+enable:
+	sudo docker update --restart=always $(IMAGE)
+disable:
+	sudo docker update --restart=no $(IMAGE)
+frm:
+	sudo docker rm --force $(IMAGE)
+bash:
+	sudo docker exec -it $(IMAGE) /bin/bash
+_run:
+	sudo docker run -d \
+	--name $(IMAGE) \
+	--hostname $(IMAGE) \
+	-p 80:80 \
+	-p 443:443 \
+	-v /var/run/docker.sock:/tmp/docker.sock:ro \
+	-v $(PWD)/htpasswd:/etc/nginx/htpasswd \
+	-v $(PWD)/vhost.d:/etc/nginx/vhost.d \
+	-v $(PWD)/certs:/etc/nginx/certs \
+	$(OPTION) \
+	$(AUTHOR)/$(IMAGE):$(TAG)
+run:_run
+EOF
+}
+#!/bin/bash
+skelmakefile(){
+cat > Makefile << 'EOF'
+#!/usr/bin/make -f
+SHELL=/bin/bash
+##
+define README
+# README
+endef
+export README
+RUN := /bin/bash
+
+all:
+	@echo make readme
+readme:
+	-@echo "$$README"
+version:
+	$(RUN) \
+	--version
+EOF
+}
+#!/bin/bash
+skelversion(){
+bash -c "cat << 'EOF' > VERSION
+1.0.0
+EOF"
+}
+#!/bin/bash
+skelbash(){
+OUTPUT=skel.sh
+if [ ! -f "$OUTPUT" ]; then
+cat << 'EOF' > $OUTPUT
+#!/bin/bash
+DATEID=$(date +%Y%m%d%H%M%S)
+BASE=$(cd $(dirname $0); pwd)
+[ -e $BASE/_.sh ] && source $BASE/_.sh
+cd $BASE
+#if ask "FLG ?";then FLG=true;else FLG=false;fi
+#if $FLG; then echo "ok"; else echo "ng"; fi
+#if [ $# -ne 1 ]; then
+#  echo "require args:$#/1"
+#else
+#  echo "$1"
+#fi
+#readonly DRYRUN=false
+#if "${DRYRUN}"; then echo "DRYRUN"; fi
+#if [[ -d "${DIR}" ]] ; then echo "found dirctory"; fi
+#ARR=('docker' 'vagrant');for i in "${!ARR[@]}";do ITEM="${ARR[i]}";if ! type "$ITEM" > /dev/null 2>&1;then echo "not found $ITEM";fi;done
+#sudo bash -c "cat << 'EOF' > ok
+#$DATEID
+#EOF"
+#if [ -f "/.dockerenv" ] ; then
+#  echo "try docker process"
+#fi
+echo "complete"
+
+EOF
+chmod +x $OUTPUT
+fi
+}
+
+#!/bin/bash
+skelcmake(){
+OUTPUT=CMakeLists.txt
+if [ ! -f "$OUTPUT" ]; then
+cat << 'EOF' > $OUTPUT
+cmake_minimum_required(VERSION 2.8.12.2)
+project(skel CXX)
+add_executable(skelton main.cpp)
+
+EOF
+fi
+}
+
+#!/bin/bash
+skelcpp(){
+OUTPUT=skel.cpp
+if [ ! -f "$OUTPUT" ]; then
+cat << 'EOF' > $OUTPUT
+#include <iostream>
+int main() {
+  std::cout << "HelloWorld" << std::endl;
+  return 0;
+}
+EOF
+fi
+}
+
+#!/bin/bash
+skelcsharp(){
+OUTPUT=skel.cs
+if [ ! -f "$OUTPUT" ]; then
+cat << 'EOF' > $OUTPUT
+using System;
+public class HelloWorld {
+    public static void Main(string[] args){
+        Console.WriteLine ("HelloWorld");
+    }
+}
+EOF
+fi
+}
+
+#!/bin/bash
+skelgo(){
+cat > main.go << 'EOF'
+package main
+//import (
+//	_ "github.com/mattn/go-sqlite3"
+//)
+import (
+	"fmt"
+	"os"
+	"path/filepath"
+)
+func main() {
+	//fmt.Println("HelloWorld")
+	pwd, _ := os.Getwd()
+	fmt.Println("PWD:"+pwd)
+	exe_path, _ := os.Executable()
+	fmt.Println("EXE_PATH:"+exe_path)
+	exe_dir := filepath.Dir(exe_path)
+	fmt.Println("EXE_DIR:"+exe_dir)
+	file, _ := os.Create(exe_dir+"/ok.txt")
+	defer file.Close()
+	file.Write(([]byte)("Hello,World!"))
+}
+
+EOF
+}
+#!/bin/bash
+skelhtml(){
+cat > index.html << 'EOF'
+<html>
+<head></head>
+<body><center>HelloWorld</center>
+</body>
+</html>
+EOF
+}
+#!/bin/bash
+skeljson(){
+OUTPUT=skel.json
+if [ ! -f "$OUTPUT" ]; then
+cat << 'EOF' > $OUTPUT
+{
+  "root":{
+    "id":"1",
+    "list":["a","b","c"],
+    "object":{"key":"val"},
+    "array":[
+      {"name":"name1"},
+      {"name":"name2"}
+    ]
+  }
+}
+EOF
+fi
+}
+#!/bin/bash
+skelperl(){
+OUTPUT=skel.pl
+if [ ! -f "$OUTPUT" ]; then
+cat << 'EOF' > $OUTPUT
+#!/usr/bin/perl
+print "Content-type: text/html\n\n";
+print "HelloWorld\n";
+
+EOF
+chmod 755 $OUTPUT
+fi
+}
+
+#!/bin/bash
+skelphp(){
+cat > info.php << 'EOF'
+<?php phpinfo();
+
+EOF
+}
+skelref(){
+cat > info.php << 'EOF'
+<?php
+class View extends Views{}
+
+EOF
+}
+#!/bin/bash
+skelpython(){
+OUTPUT=main.py
+if [ ! -f "$OUTPUT" ]; then
+bash -c "cat << 'EOF' > $OUTPUT
+#!/usr/bin/env python3
+# coding:utf-8
+
+EOF"
+chmod +x $OUTPUT
+fi
+}
+#!/bin/bash
+citravis(){
+if ! type "travis" > /dev/null 2>&1 ; then
+  echo "Command Not Found:travis"
+  return 0;
+fi
+if [ $# -ne 2 ]; then
+  echo "Require [Username],[Reponame]"
+else
+  echo "travis encrypt -r $1/$2 \"<github_token>\""
+  read -sp "GithubToken:" TOKEN
+  #echo "<<$TOKEN>>"
+  travis encrypt -r $1/$2 "$TOKEN"
+fi
+}
+#!/bin/bash
+dockerexec(){
+sudo docker exec -it $1 /bin/bash
+}
+dockerrminone(){
+sudo docker images | awk '/<none/{print $3}' | xargs sudo docker rmi
+}
+dockerstopall(){
+sudo docker stop $(sudo docker ps -a -q)
+}
+dockerrmall(){
+sudo docker rm $(sudo docker ps -a -q)
+}
+dockerstartonwslforadmin(){
+#sudo apt-get install -y docker.io
+sudo cgroupfs-mount
+#sudo usermod -aG docker $USER
+#restart terminal for admin privilege
+sudo service docker start
+}
+dockernginx(){
+  sudo docker run --name nginx -d -p 80:80 -p 443:443 -v /var/run/docker.sock:/tmp/docker.sock:ro nginxproxy/nginx-proxy
+}
+dockerphp(){
+  if [ $# -ne 1 ]; then
+    echo "require port:$#/1"
+  else
+    IMAGE=php
+    TAG=7.2-apache
+    sudo docker run -d --name $IMAGE --hostname $IMAGE -p $1:80 -v "$PWD":/var/www $IMAGE:$TAG
+  fi
+}
+dockercentos7systemd80(){
+  sudo docker run -d --name centos7systemd --privileged -p 80:80 -v "$PWD":/var/www centos/systemd
 }
