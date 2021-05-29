@@ -3,8 +3,8 @@ alias ll='ls -alFh'
 alias l='ls -cf'
 alias watch='watch -d=permanent -n 5'
 alias pss="ps --sort=start_time"
-alias images="sudo docker images"
-alias ps="sudo docker ps -a"
+alias dimages="sudo docker images"
+alias dps="sudo docker ps -a"
 alias v="vim"
 alias e="emacs -nw"
 alias s='git status'
@@ -591,7 +591,7 @@ installubuntuoraclejdk(){
 #!/bin/bash
 f(){
   hr
-  echo VERSION:2021-05-29 23:49:51.246611944
+  echo VERSION:2021-05-29 23:52:22.277263923
   hr
 }
 #!/bin/bash
