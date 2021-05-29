@@ -26,7 +26,7 @@ dockerphp(){
     echo "require port:$#/1"
   else
     IMAGE=php
-    TAG=7.2-apache
+    TAG=8.0-apache
     sudo docker run -d --name $IMAGE --hostname $IMAGE -p $1:80 -v "$PWD":/var/www $IMAGE:$TAG
   fi
 }
