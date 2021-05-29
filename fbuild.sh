@@ -1,23 +1,20 @@
 #!/bin/bash
 
-mkdir -p build
-
-function build(){
-  cat $PWD/src/$1/*.sh > $PWD/build/$1.sh
-}
-
-build install
-build skel
-build untitled
-build arch
-build ubuntu
-
-rm -f $PWD/docs/f.sh
+BASE=$(cd $(dirname $0); pwd)
+DATEID=$(date +%Y%m%d%H%M%S)
 NOW=$(date +'%Y-%m-%d %H:%M:%S.%N')
 
-bash -c "cat << 'EOF' > $PWD/build/f
+mkdir -p $BASE/build
+rm -f $BASE/build/*
+rm -f $BASE/docs/f.sh
+
+for FILE in $BASE/src/*; do
+  DIR=${FILE##*/}
+  cat $BASE/src/$DIR/*.sh > $BASE/build/$DIR.sh
+done
+
+bash -c "cat << 'EOF' > $BASE/build/f
 #!/bin/bash
-LOADED+=('f')
 f(){
   hr
   echo VERSION:$NOW
@@ -26,13 +23,10 @@ f(){
 EOF"
 
 cat \
-  $PWD/require/*.sh \
-  $PWD/include/*.sh \
-  $PWD/shell/*.sh \
-  $PWD/build/f \
-  $PWD/build/*.sh \
-  > $PWD/docs/f.sh
+  $BASE/require/*.sh \
+  $BASE/build/* \
+  > $BASE/docs/f.sh
 
-chmod +x $PWD/docs/f.sh
+chmod +x $BASE/docs/f.sh
 echo "build at $NOW"
 echo "complete"
