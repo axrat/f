@@ -5,8 +5,6 @@ DATEID=$(date +%Y%m%d%H%M%S)
 NOW=$(date +'%Y-%m-%d %H:%M:%S.%N')
 
 mkdir -p $BASE/build
-rm -f $BASE/build/*
-rm -f $BASE/docs/f.sh
 
 for FILE in $BASE/src/*; do
   DIR=${FILE##*/}
@@ -29,4 +27,7 @@ cat \
 
 chmod +x $BASE/docs/f.sh
 echo "build at $NOW"
+
+rm -rf $BASE/build
+
 echo "complete"

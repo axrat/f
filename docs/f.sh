@@ -909,7 +909,7 @@ dockercentos7systemd80(){
 #!/bin/bash
 f(){
   hr
-  echo VERSION:2021-05-29 21:58:02.937804900
+  echo VERSION:2021-05-29 22:00:46.578447400
   hr
 }
 #!/bin/bash
