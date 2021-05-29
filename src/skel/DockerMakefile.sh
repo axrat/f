@@ -7,7 +7,7 @@ SHELL=/bin/bash
 AUTHOR:=nginxproxy
 IMAGE:=nginx-proxy
 TAG:=latest
-NAME:=nginx
+NAME:=$(IMAGE)
 DEFAULT_HOST:=default.test
 OPTION:=
 enable:

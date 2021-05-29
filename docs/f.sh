@@ -590,7 +590,7 @@ installubuntuoraclejdk(){
 #!/bin/bash
 f(){
   hr
-  echo VERSION:2021-05-29 23:27:06.040296371
+  echo VERSION:2021-05-29 23:29:41.065557632
   hr
 }
 #!/bin/bash
@@ -676,7 +676,7 @@ SHELL=/bin/bash
 AUTHOR:=nginxproxy
 IMAGE:=nginx-proxy
 TAG:=latest
-NAME:=nginx
+NAME:=$(IMAGE)
 DEFAULT_HOST:=default.test
 OPTION:=
 enable:
