@@ -1,10 +1,10 @@
 #!/bin/bash
 alias ll='ls -alFh'
-alias la='ls -A'
 alias l='ls -cf'
 alias watch='watch -d=permanent -n 5'
-alias ps="ps --sort=start_time"
-alias dps="sudo docker ps -a"
+alias pss="ps --sort=start_time"
+alias images="sudo docker images"
+alias ps="sudo docker ps -a"
 alias v="vim"
 alias e="emacs -nw"
 alias s='git status'
