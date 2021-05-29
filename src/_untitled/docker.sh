@@ -21,16 +21,14 @@ sudo service docker start
 dockernginx(){
   sudo docker run --name nginx -d -p 80:80 -p 443:443 -v /var/run/docker.sock:/tmp/docker.sock:ro nginxproxy/nginx-proxy
 }
-dockerphp72apache80html(){
-  if [ $# -ne 2 ]; then
-    echo "require name,port:$#/2"
+dockerphp(){
+  if [ $# -ne 1 ]; then
+    echo "require port:$#/1"
   else
-    sudo docker run -d --name $1 -p $2:80 -v "$PWD":/var/www/html php:7.2-apache
+    IMAGE=php
+    TAG=7.2-apache
+    sudo docker run -d --name $IMAGE --hostname $IMAGE -p $1:80 -v "$PWD":/var/www $IMAGE:$TAG
   fi
-}
-dockerphp72apache80www(){
-  mkdir -p www
-  sudo docker run -d --name php72apache -p 80:80 -v "$PWD/www":/var/www php:7.2-apache
 }
 dockercentos7systemd80(){
   sudo docker run -d --name centos7systemd --privileged -p 80:80 -v "$PWD":/var/www centos/systemd
