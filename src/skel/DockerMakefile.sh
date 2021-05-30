@@ -24,7 +24,7 @@ _run:
 	--hostname $(NAME) \
 	-e DEFAULT_HOST=$(DEFAULT_HOST) \
 	-e ENABLE_IPV6=true \
-	-e HTTPS_METHOD=noredirect \
+	-e HTTPS_METHOD=redirect \
 	-p 80:80 \
 	-p 443:443 \
 	-v /var/run/docker.sock:/tmp/docker.sock:ro \
