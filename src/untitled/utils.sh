@@ -218,13 +218,6 @@ createJetBrainsDirectory(){
     echo "mkdir -p ${jetbrains[i]}"
   }
 }
-getDirSize(){
-  if [ $# -ne 1 ]; then
-    echo "Require [DirectoryName]"
-  else
-    du -sh $1
-  fi
-}
 urlencode() {
   local string="${1}"
   local strlen=${#string}
@@ -269,12 +262,8 @@ crossorigincheck(){
   fi
 }
 
-checkdirectorysize(){
-  if [ $# -ne 1 ]; then
-    echo "Require [DirectoryPath]"
-  else
-    du -sh $1
-  fi
+directorysize(){
+  du -sh ./*/
 }
 phpconfigurecheck(){
 php -i  | grep './configure'
@@ -465,7 +454,4 @@ sudo groupadd docker
 sudo gpasswd -a $USER docker
 sudo systemctl restart docker
 echo "plz relogin"
-}
-directory_size(){
-  du --separate-dirs -h --total $(pwd)/*/
 }
