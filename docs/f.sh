@@ -591,7 +591,7 @@ installubuntuoraclejdk(){
 #!/bin/bash
 f(){
   hr
-  echo VERSION:2021-06-03 18:58:44.653036588
+  echo VERSION:2021-06-03 18:59:12.450627718
   hr
 }
 #!/bin/bash
@@ -668,45 +668,6 @@ PRESS_KEY=" echo 'Press any key to continue...'; read -k1 -s"
 GIT_USER_NAME=onoie
 GIT_USER_EMAIL=onoie3@gmail.com
 declare -a LOADED=()
-#!/bin/bash
-skeldockermakefile(){
-cat > Makefile << 'EOF'
-#!/usr/bin/make -f
-SHELL=/bin/bash
-##
-AUTHOR:=nginxproxy
-IMAGE:=nginx-proxy
-TAG:=latest
-NAME:=$(IMAGE)
-DEFAULT_HOST:=default.test
-OPTION:=
-enable:
-	sudo docker update --restart=always $(IMAGE)
-disable:
-	sudo docker update --restart=no $(IMAGE)
-frm:
-	sudo docker rm --force $(IMAGE)
-bash:
-	sudo docker exec -it $(IMAGE) /bin/bash
-_run:
-	sudo docker run -d \
-	--name $(NAME) \
-	--hostname $(NAME) \
-	-e DEFAULT_HOST=$(DEFAULT_HOST) \
-	-e ENABLE_IPV6=true \
-	-e HTTPS_METHOD=redirect \
-	-p 80:80 \
-	-p 443:443 \
-	-v /var/run/docker.sock:/tmp/docker.sock:ro \
-	-v $(PWD)/htpasswd:/etc/nginx/htpasswd \
-	-v $(PWD)/vhost.d:/etc/nginx/vhost.d \
-	-v $(PWD)/certs:/etc/nginx/certs \
-	$(OPTION) \
-	$(AUTHOR)/$(IMAGE):$(TAG)
-run:_run
-
-EOF
-}
 #!/bin/bash
 skelmakefile(){
 cat > Makefile << 'EOF'
